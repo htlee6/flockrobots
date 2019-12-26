@@ -1,0 +1,19 @@
+{
+  "v_flock": 400.0,
+  "v_rep": 619.664,
+  "v_frict": 50.0,
+  "v_max": 800,
+  "r0": 2566.8,
+  "r0_offset_frict": 1000.0,
+  "r0_shill": 0.0,
+  "slope_rep": 0.4,
+  "slope_frict": 0.4,
+  "a_frict": 250.0,
+  "c_frict": 0.23802,
+  "arena": {
+    "centerx": 0.0,
+    "centery": 0.0,
+    "shape": 1
+  },
+  "dimofsimulation": 2
+}

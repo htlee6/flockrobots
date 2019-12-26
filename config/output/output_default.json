@@ -1,0 +1,14 @@
+{
+  "OutputDirectory": "output",
+  "OutputFilename": "output",
+  "ifSaveDetail": {
+    "SaveDistanceBetweenUnits": "false",
+    "SaveDistanceBetweenNeighbours": "false",
+    "SaveVelocity": "stat",
+    "SaveCorrelation": "false",
+    "SaveCoM": "false",
+    "SaveCollisions": "stat",
+    "SaveCollisionRatio": "stat",
+    "SaveAcceleration": "false"
+  }
+}

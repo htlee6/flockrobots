@@ -1,0 +1,13 @@
+{
+  "AgentNumber": 100,
+  "SimulationLength": 600.0,
+  "InitPosition": {
+    "initX": 25000.0,
+    "initY": 25000.0,
+    "initZ": 0.0
+  },
+  "deltaT": 0.01,
+  "DangerousRadius": 300.0,
+  "LengthToStore": 15.0,
+  "StartOfSteadyState": false
+}

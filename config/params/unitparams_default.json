@@ -1,0 +1,32 @@
+{
+    "PID": {
+        "taux": 1.0,
+        "tauy": 1.0,
+        "tauz": 1.0
+    },
+    "amax": 600.0,
+    "communication": {
+        "rc": 10000.0,
+        "tdelay": 1.0
+    },
+    "GPS": {
+        "tGPS": 0.2,
+        "sigmax": 2000.0,
+        "sigmay": 2000.0,
+        "sigmaz": 0.0
+    },
+    "externalnoise": {
+        "sigmax": 2000.0,
+        "sigmay": 2000.0,
+        "sigmaz": 0.0
+    },
+    "wind": {
+        "avg": 0.0,
+        "stdev": 0.0,
+        "angle": 0.0
+    },
+    "packageloss": {
+        "distance": 8000.0,
+        "ratio": 0.0
+    }
+}
