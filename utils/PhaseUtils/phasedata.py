@@ -1,6 +1,6 @@
-from utils.Basic.Position import Position2D
-from utils.Basic.Velocity import Velocity2D
-from utils.Basic.InnerState import InnerState2D
+from utils.Basic.position import Position2D
+from utils.Basic.velocity import Velocity2D
+from utils.Basic.innerstate import InnerState2D
 
 
 class PhaseData:
@@ -24,3 +24,5 @@ class PhaseData:
 
     def func1(self):
         pass
+
+

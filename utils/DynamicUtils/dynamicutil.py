@@ -1,5 +1,5 @@
-from utils.PhaseUtils.PhaseData import PhaseData
-from utils.ParamUtils.SituationParam import Position3D
+from utils.PhaseUtils.phasedata import PhaseData
+from utils.ParamUtils.situationparam import Position3D
 
 
 def randomizephase(phase: PhaseData):
@@ -9,4 +9,3 @@ def randomizephase(phase: PhaseData):
 
 
 def initcondition(phasedata: PhaseData, initposition: Position3D, radiusindanger: float):
-    []=randomizephase()

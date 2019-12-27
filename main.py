@@ -7,16 +7,22 @@ import sys
 import csv
 
 # Import self-built packages required
-import utils.ConfigUtils.OutputFile as OutputFile
-import utils.ParamUtils.SituationParam as SituationParam
-import utils.ParamUtils.FlockParam as FlockParam
-import utils.ParamUtils.UnitParam as UnitParam
-import utils.PhaseUtils.PhaseData as PhaseData
-import utils.ParamUtils.WindParam as WindParam
-import utils.StatsticUtils.StatUtils as StatUtil
+import utils.ConfigUtils.outputfile as OutputFile
 
-import model.RobotModel as RobotModel
-import model.SensorModel as SensorModel
+import utils.ParamUtils.situationparam as SituationParam
+import utils.ParamUtils.flockparam as FlockParam
+import utils.ParamUtils.unitparam as UnitParam
+import utils.ParamUtils.windparam as WindParam
+
+import utils.PhaseUtils.phasedata as PhaseData
+import utils.PhaseUtils.phasedatatimeline as PhaseDataTimeline
+
+import utils.StatsticUtils.statutils as StatUtil
+
+import utils.DynamicUtils.dynamicutil as DynamicUtil
+
+import model.robotmodel as RobotModel
+import model.sensormodel as SensorModel
 
 # Functions definition, only used in main.py
 pass
@@ -37,8 +43,11 @@ def print_help():
           )
 
 
-def initialize():
-    initcondition(PhaseData.PhaseData(), situparam.)
+def initialize(phasetimeline: PhaseDataTimeline.PhaseTimeline, ):
+    DynamicUtil.initcondition(
+        ,
+        situparam.initpos,
+        situparam.dangerousradius)
     pass
 
 
@@ -48,6 +57,7 @@ if __name__ == '__main__':
     no_agentparams = 0
     no_flockparams = 0
     now = 0.0
+    phasetimeline = [PhaseData.PhaseData()]
 
     for i in sys.argv:
 
@@ -123,7 +133,7 @@ if __name__ == '__main__':
     '''Create a phase data instance'''
 
     # init a 'PhaseData' instance
-    phasedata = PhaseData.PhaseData()
+    phasenow = PhaseData.PhaseData()
 
     '''Create a wind parameter instance'''
 
@@ -137,8 +147,8 @@ if __name__ == '__main__':
     # Compute 'timestep2store'
     timestep2store = int((stored_time / situparam.deltaT) - 1)
 
-    [phasedata, flockparam, situparam, unitparam, windparam] = RobotModel.initpreferredvelocity(
-        phasedata=phasedata,
+    phasedata, flockparam, situparam, unitparam, windparam = RobotModel.initpreferredvelocity(
+        phasedata=phasenow,
         flockparam=flockparam,
         situparam=situparam,
         unitparam=unitparam,
@@ -148,7 +158,8 @@ if __name__ == '__main__':
     agentsindanger = [False] * situparam.agentnumber
 
     statutil = StatUtil.StatUtil()
-    statutil.elapsedtime = now * situparam.deltaT - 5.0 - unitparam.communication.tdelay
+    statutil.elapsedtime = now * situparam.deltaT - \
+        5.0 - unitparam.communication.tdelay
 
     # Log printing
     print('[' + datetime.datetime.now().strftime("%H:%M:%S") + '] ' +

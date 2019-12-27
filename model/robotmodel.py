@@ -1,8 +1,8 @@
-from utils.ParamUtils.FlockParam import FlockParam
-from utils.ParamUtils.SituationParam import SituationParam
-from utils.ParamUtils.UnitParam import UnitParam
-from utils.ParamUtils.WindParam import WindParam
-from utils.PhaseUtils.PhaseData import PhaseData
+from utils.ParamUtils.flockparam import FlockParam
+from utils.ParamUtils.situationparam import SituationParam
+from utils.ParamUtils.unitparam import UnitParam
+from utils.ParamUtils.windparam import WindParam
+from utils.PhaseUtils.phasedata import PhaseData
 
 
 def initpreferredvelocity(phasedata: PhaseData, flockparam: FlockParam,
