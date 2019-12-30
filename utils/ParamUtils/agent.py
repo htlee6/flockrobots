@@ -79,7 +79,7 @@ class PackageLoss:
         self.ratio = ratio
 
 
-class UnitParam:
+class AgentParam:
 
     PID: PIDctrl
     amax: float
@@ -101,3 +101,7 @@ class UnitParam:
         self.wind = wind
         self.pkgloss = pkgloss
         pass
+
+
+
+

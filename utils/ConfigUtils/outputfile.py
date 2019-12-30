@@ -1,6 +1,7 @@
 import json
 import csv
 
+
 def getconfig(filepath='default',
               item='OutputFilename'):
     """ Get information from output config file.

@@ -1,7 +1,7 @@
-from utils.ParamUtils.flockparam import FlockParam
-from utils.ParamUtils.situationparam import SituationParam
-from utils.ParamUtils.unitparam import UnitParam
-from utils.ParamUtils.windparam import WindParam
+from utils.ParamUtils.flock import FlockParam
+from utils.ParamUtils.situation import SituationParam
+from utils.ParamUtils.agent import UnitParam
+from utils.ParamUtils.wind import WindParam
 from utils.PhaseUtils.phasedata import PhaseData
 
 

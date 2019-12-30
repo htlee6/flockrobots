@@ -7,22 +7,22 @@ import sys
 import csv
 
 # Import self-built packages required
-import utils.ConfigUtils.outputfile as OutputFile
+import utils.ConfigUtils.outputfile as outputfile
 
-import utils.ParamUtils.situationparam as SituationParam
-import utils.ParamUtils.flockparam as FlockParam
-import utils.ParamUtils.unitparam as UnitParam
-import utils.ParamUtils.windparam as WindParam
+import utils.ParamUtils.situation as situation
+import utils.ParamUtils.flock as flock
+import utils.ParamUtils.agent as unit
+import utils.ParamUtils.wind as wind
 
-import utils.PhaseUtils.phasedata as PhaseData
-import utils.PhaseUtils.phasedatatimeline as PhaseDataTimeline
+import utils.PhaseUtils.phasedata as phasedata
+import utils.PhaseUtils.phaselist as phaselist
 
-import utils.StatsticUtils.statutils as StatUtil
+import utils.StatsticUtils.stat as stat
 
-import utils.DynamicUtils.dynamicutil as DynamicUtil
+import utils.DynamicUtils.dynamicutil as dynamicutil
 
-import model.robotmodel as RobotModel
-import model.sensormodel as SensorModel
+import model.robotmodel as robotmodel
+import model.sensormodel as sensormodel
 
 # Functions definition, only used in main.py
 pass
@@ -43,8 +43,8 @@ def print_help():
           )
 
 
-def initialize(phasetimeline: PhaseDataTimeline.PhaseTimeline, ):
-    DynamicUtil.initcondition(
+def initialize(phasetimeline: phaselist.PhaseList, ):
+    dynamicutil.initcondition(
         ,
         situparam.initpos,
         situparam.dangerousradius)
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     no_agentparams = 0
     no_flockparams = 0
     now = 0.0
-    phasetimeline = [PhaseData.PhaseData()]
+    phasetimeline = [phasedata.PhaseData()]
 
     for i in sys.argv:
 
@@ -84,9 +84,9 @@ if __name__ == '__main__':
         # file
 
         # Output filename
-        OutputPath = OutputFile.getconfig()
+        OutputPath = outputfile.getconfig()
 
-    OutputPath = OutputFile.getconfig(item='OutputDirectory') + '/' + \
+    OutputPath = outputfile.getconfig(item='OutputDirectory') + '/' + \
         datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + \
         OutputPath + '.csv'
 
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
     '''Create a situation parameter instance'''
 
-    situparam = SituationParam.SituationParam(agentnumber=200)
+    situparam = situation.SituationParam(agentnumber=200)
     # agentnumber = 200 for test
     situparam = situparam.getdefault(filepath=SituationConfigPath)
 
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     if FlockConfigPath == '':
         FlockConfigPath = 'default'
 
-    flockparam = FlockParam.FlockParam()
+    flockparam = flock.FlockParam()
     flockparam = flockparam.getdefault(filepath=FlockConfigPath)
 
     # adjust each parameter in 'flockparam' instance
@@ -128,17 +128,17 @@ if __name__ == '__main__':
     # flockparam = flockparam.applyrange()
 
     '''Create a unit parameter instance'''
-    unitparam = UnitParam.UnitParam()
+    unitparam = unit.UnitParam()
 
     '''Create a phase data instance'''
 
     # init a 'PhaseData' instance
-    phasenow = PhaseData.PhaseData()
+    phasenow = phasedata.PhaseData()
 
     '''Create a wind parameter instance'''
 
     # init a 'WindParam' instance
-    windparam = WindParam.WindParam(vx=1.0, vy=2.0)
+    windparam = wind.WindParam(vx=1.0, vy=2.0)
 
     '''Several controlling parameters essential in simulation'''
 
@@ -147,17 +147,17 @@ if __name__ == '__main__':
     # Compute 'timestep2store'
     timestep2store = int((stored_time / situparam.deltaT) - 1)
 
-    phasedata, flockparam, situparam, unitparam, windparam = RobotModel.initpreferredvelocity(
+    phasedata, flockparam, situparam, unitparam, windparam = robotmodel .initpreferredvelocity(
         phasedata=phasenow,
         flockparam=flockparam,
         situparam=situparam,
         unitparam=unitparam,
         windparam=windparam)
 
-    noises = SensorModel.initnoise(situparam.agentnumber)
+    noises = sensormodel.initnoise(situparam.agentnumber)
     agentsindanger = [False] * situparam.agentnumber
 
-    statutil = StatUtil.StatUtil()
+    statutil = stat.StatUtil()
     statutil.elapsedtime = now * situparam.deltaT - \
         5.0 - unitparam.communication.tdelay
 
@@ -166,6 +166,6 @@ if __name__ == '__main__':
           "The result will be written into '" + OutputPath + "'")
 
     # Create the output file & Write the result into file
-    OutputFile.generatefile(filepath=OutputPath)
+    outputfile.generatefile(filepath=OutputPath)
 
     pass

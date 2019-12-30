@@ -1,11 +1,23 @@
 from utils.PhaseUtils.phasedata import PhaseData
-from utils.ParamUtils.situationparam import Position3D
+from utils.PhaseUtils.phaselist import PhaseList
+from utils.ParamUtils.situation import Position3D
 
 
-def randomizephase(phase: PhaseData):
-    phase = PhaseData()
+def randomizephase(phasearray: PhaseList, initsize: Position3D,
+                   initcenter: Position3D, fromagentno: int, toagentno: int, radius: float):
 
-    return phase
+    res_phase = PhaseList()
+
+    # agent number of initial phase
+    maxstep = 100 * phasearray.data[0].agentnumber
+    
+
+    for i in range(fromagentno, toagentno):
+        pass
+
+    return res_phase
 
 
-def initcondition(phasedata: PhaseData, initposition: Position3D, radiusindanger: float):
+def initcondition(phasedata: PhaseData, initsize: Position3D,
+                  radiusindanger: float):
+    randomizephase()

@@ -1,4 +1,4 @@
-import utils.PhaseUtils.phasedatatimeline as PhaseDataTimeline
+import utils.PhaseUtils.phaselist as PhaseDataTimeline
 
 a = PhaseDataTimeline.PhaseTimeline(timestep=10)
 
