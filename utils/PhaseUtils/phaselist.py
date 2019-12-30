@@ -1,4 +1,5 @@
 import utils.PhaseUtils.phasedata as phasedata
+from utils.PhaseUtils.phasedata import PhaseData
 
 
 class PhaseList:
@@ -6,6 +7,16 @@ class PhaseList:
     timestep: int
     data: list
 
-    def __init__(self, timestep=1):
+    def __init__(self, timestep: int, **phaseinitparam):
         self.timestep = timestep
-        self.data = [phasedata.PhaseData() for i in range(timestep)]
+        if not phaseinitparam:
+            self.data = [phasedata.PhaseData().getdefault() for i in range(timestep)]
+        else:
+            self.data = [phasedata.PhaseData(phaseinitparam['innerstatenumber'], phaseinitparam['agentnumber']) for i in range(timestep)]
+
+    def randomphaselist(self):
+        pass
+
+    def __len__(self):
+        return self.timestep
+

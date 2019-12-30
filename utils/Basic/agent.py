@@ -5,13 +5,14 @@ from utils.ParamUtils.agent import AgentParam
 
 class Agent:
 
-    idx: int
+    index: int
     velocity: Velocity3D
     coordinate: Position3D
     agentparam: AgentParam
 
     def __init__(self, idx, velocity=Velocity3D(), coordinate=Position3D(), agentparam=AgentParam()):
-        self.idx = idx
+        self.index = idx
         self.velocity = velocity
         self.coordinate = coordinate
         self.agentparam = agentparam
+
