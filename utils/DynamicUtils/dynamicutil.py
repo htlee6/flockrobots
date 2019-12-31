@@ -1,26 +1,60 @@
 from utils.PhaseUtils.phasedata import PhaseData
 from utils.PhaseUtils.phaselist import PhaseList
 from utils.ParamUtils.situation import Position3D
+import utils.Basic.velocity as veloctiy
+import utils.Basic.position as position
+import random
 
 
-def randomphase(pl: PhaseList, initsize: Position3D, initcenter: Position3D,
+'''def randomphase(pl: PhaseList, initsize: Position3D, initcenter: Position3D,
                 fromagentno: int, toagentno: int, radius: float):
     # variables
 
     # agent number of initial phase (whose index is 0)
     maxstep = 100 * len(pl.data[0])
-    # is arrangement correct?
+    # which means -- is arrangement correct?
     arrangementcorrect = False
+    #
+    stepcount = 0
 
     pl.data[0].random(fromno=fromagentno, tono=toagentno + 1)
 
     for i in range(fromagentno, toagentno + 1):
         while not arrangementcorrect:
             arrangementcorrect = True
+            random.seed()
 
-    return pl
+            randpos = Position3D(
+                x=random.uniform(
+                    initcenter.x - initsize.x / 2,
+                    initcenter.x + initsize.x / 2),
+                y=random.uniform(
+                    initcenter.y - initsize.y / 2,
+                    initcenter.y + initsize.y / 2),
+                z=random.uniform(
+                    initcenter.z - initsize.z / 2,
+                    initcenter.z + initsize.z / 2))
 
+            for j in range(toagentno):
 
-def initcondition(phasedata: PhaseData, initsize: Position3D,
-                  radiusindanger: float):
-    randomphase()
+                if i == j:
+                    j = toagentno - 1
+                    continue
+
+                posofj = pl.data[0].agents[j].coordinate
+                diff = posofj.positiondiff(randpos)
+
+                if diff.length() <= radius:
+                    arrangementcorrect = False
+
+            stepcount = stepcount + 1
+            if stepcount > maxstep:
+                raise TimeoutError(
+                    'Stepcount bigger than maxstep, please check! ')
+
+        pl.data[0].agents[i].velocity = veloctiy.Velocity3D()
+        pl.data[0].agents[i].coordinates = randpos
+        arrangementcorrect = False
+
+    return pl'''
+
