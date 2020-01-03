@@ -1,5 +1,5 @@
-import utils.PhaseUtils.phasedata as phasedata
-from utils.PhaseUtils.phasedata import PhaseData
+import utils.PhaseUtils.phase as phasedata
+from utils.PhaseUtils.phase import PhaseData
 
 
 class PhaseList:

@@ -11,10 +11,10 @@ import utils.ConfigUtils.outputfile as outputfile
 
 import utils.ParamUtils.situation as situation
 import utils.ParamUtils.flock as flock
-import utils.ParamUtils.agent as unit
+import utils.ParamUtils.unit as unit
 import utils.ParamUtils.wind as wind
 
-import utils.PhaseUtils.phasedata as phasedata
+import utils.PhaseUtils.phase as phase
 import utils.PhaseUtils.phaselist as phaselist
 
 import utils.StatsticUtils.stat as stat
@@ -43,11 +43,9 @@ def print_help():
           )
 
 
-def initialize(phasetimeline: phaselist.PhaseList, ):
-    dynamicutil.initcondition(
-        ,
-        situparam.initpos,
-        situparam.dangerousradius)
+def initialize(phasetimeline: phaselist.PhaseList, situparam: situation.SituationParam):
+    dynamicutil.initcondition(phasedata=phasetimeline[0], situparam=situparam)
+
     pass
 
 
@@ -57,7 +55,8 @@ if __name__ == '__main__':
     no_agentparams = 0
     no_flockparams = 0
     now = 0.0
-    phasetimeline = [phasedata.PhaseData()]
+    phasetimeline = [phase.PhaseData()]
+    conditionreset = [True, True]
 
     for i in sys.argv:
 
@@ -78,7 +77,6 @@ if __name__ == '__main__':
     OutputPath = input(
         '1. Set output file path (Press Enter to use the default): ')
     if OutputPath == '':
-
         # aka input nothing/pressed Enter,
         # so we will use the default settings reading from the output config
         # file
@@ -87,8 +85,8 @@ if __name__ == '__main__':
         OutputPath = outputfile.getconfig()
 
     OutputPath = outputfile.getconfig(item='OutputDirectory') + '/' + \
-        datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + \
-        OutputPath + '.csv'
+                 datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + \
+                 OutputPath + '.csv'
 
     # Check optional flag '-i', which defines the input file for situation
     # params
@@ -133,7 +131,7 @@ if __name__ == '__main__':
     '''Create a phase data instance'''
 
     # init a 'PhaseData' instance
-    phasenow = phasedata.PhaseData()
+    phasenow = phase.PhaseData()
 
     '''Create a wind parameter instance'''
 
@@ -147,7 +145,7 @@ if __name__ == '__main__':
     # Compute 'timestep2store'
     timestep2store = int((stored_time / situparam.deltaT) - 1)
 
-    phasedata, flockparam, situparam, unitparam, windparam = robotmodel .initpreferredvelocity(
+    phasedata, flockparam, situparam, unitparam, windparam = robotmodel.initpreferredvelocity(
         phasedata=phasenow,
         flockparam=flockparam,
         situparam=situparam,
@@ -159,7 +157,21 @@ if __name__ == '__main__':
 
     statutil = stat.StatUtil()
     statutil.elapsedtime = now * situparam.deltaT - \
-        5.0 - unitparam.communication.tdelay
+                           5.0 - unitparam.communication.tdelay
+
+    # Prepare everything before starting... Are you ready?
+    initialize(phasetimeline=phaselist.PhaseList(), situparam=situparam)
+
+    # Info to be printed...
+    # agent number
+    print('Simulation started with', situparam.agentnumber, 'agent(s). ')
+    # size of area
+    print('Sizes of the starting area: %fcm * %fcm * %fcm' % situparam.initpos.x, situparam.initpos.y, situparam.initpos.z)
+
+    # The real challenge starts!
+    statutil.elapsedtime = (now * situparam.deltaT) - 5.0 - unitparam.communication.tdelay
+
+    statutil.reset()
 
     # Log printing
     print('[' + datetime.datetime.now().strftime("%H:%M:%S") + '] ' +

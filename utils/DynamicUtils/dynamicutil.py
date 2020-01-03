@@ -1,12 +1,12 @@
-from utils.PhaseUtils.phasedata import PhaseData
+from utils.PhaseUtils.phase import PhaseData
 from utils.PhaseUtils.phaselist import PhaseList
 from utils.ParamUtils.situation import Position3D
 import utils.Basic.velocity as veloctiy
 import utils.Basic.position as position
-import random
+import utils.ParamUtils.situation as situation
 
-
-'''def randomphase(pl: PhaseList, initsize: Position3D, initcenter: Position3D,
+'''
+def randomphase(pl: PhaseList, initsize: Position3D, initcenter: Position3D,
                 fromagentno: int, toagentno: int, radius: float):
     # variables
 
@@ -56,5 +56,11 @@ import random
         pl.data[0].agents[i].coordinates = randpos
         arrangementcorrect = False
 
-    return pl'''
+    return pl
+'''
+
+
+def initcondition(phasedata: PhaseData, situparam: situation.SituationParam):
+    pass
+
 

@@ -1,4 +1,4 @@
-import utils.PhaseUtils.phasedata as pd
+import utils.PhaseUtils.phase as pd
 import utils.PhaseUtils.phaselist as pl
 
 l = pl.PhaseList(timestep=10, innerstatenumber=3, agentnumber=5)
