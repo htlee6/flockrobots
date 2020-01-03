@@ -10,7 +10,9 @@ class SaveMode(Enum):
 
 # to avoid naming conflicts, using 'cSum' instead of 'Sum' to name the class which
 # is used to process sum statistics
-class cSum:
+
+
+class Item:
     # 4 digits
     acceleration: list
     # 4 digits
@@ -20,65 +22,62 @@ class cSum:
     # 3 digits
     distancebetweenneighbors: list
     # 1 digits
-    collisionration: float
+    collisionratio: float
     # 8 digits
     velocity: list
     # 3 digits
     CoM: list
 
-    def __init__(self, acceleration=list[0.0, 0.0, 0.0, 0.0], correlation=list[0.0, 0.0, 0.0, 0.0],
-                 distancebetweenunits=list[0.0, 0.0, 0.0, 0.0], distancebetweenneighbors=[0.0, 0.0, 0.0],
-                 collisionratio=0.0, velocity=list[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], CoM=list[0.0, 0.0, 0.0]):
+    def __init__(self, acceleration=[0.0, 0.0, 0.0, 0.0],
+                 correlation=[0.0, 0.0, 0.0, 0.0],
+                 distancebetweenunits=[0.0, 0.0, 0.0, 0.0],
+                 distancebetweenneighbors=[0.0, 0.0, 0.0],
+                 collisionratio=0.0,
+                 velocity=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                 CoM=[0.0, 0.0, 0.0]):
+
         self.acceleration = acceleration
         self.correlation = correlation
         self.distancebetweenunits = distancebetweenunits
         self.distancebetweenneighbors = distancebetweenneighbors
-        self.collisionration = collisionratio
+        self.collisionratio = collisionratio
         self.velocity = velocity
         self.CoM = CoM
         pass
 
-
-class StandardDeviation:
-
-    # digits of the member variables are the same as the 'cSum' class
-    acceleration: list
-    correlation: list
-    distancebetweenunits: list
-    distancebetweenneighbors: list
-    collisionration: float
-    velocity: list
-    CoM: list
-
-    def __init__(self, acceleration=list[0.0, 0.0, 0.0, 0.0], correlation=list[0.0, 0.0, 0.0, 0.0],
-                 distancebetweenunits=list[0.0, 0.0, 0.0, 0.0], distancebetweenneighbors=[ 0.0, 0.0, 0.0],
-                 collisionratio=0.0, velocity=list[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], CoM=list[0.0, 0.0, 0.0]):
-        self.acceleration = acceleration
-        self.correlation = correlation
-        self.distancebetweenunits = distancebetweenunits
-        self.distancebetweenneighbors = distancebetweenneighbors
-        self.collisionration = collisionratio
-        self.velocity = velocity
-        self.CoM = CoM
-        pass
+    def reset(self):
+        self.acceleration = [0.0, 0.0, 0.0, 0.0]
+        self.correlation = [0.0, 0.0, 0.0, 0.0]
+        self.distancebetweenunits = [0.0, 0.0, 0.0, 0.0]
+        self.distancebetweenneighbors = [0.0, 0.0, 0.0]
+        self.collisionratio = 0.0
+        self.velocity = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.CoM = [0.0, 0.0, 0.0]
 
 
 class StatUtil:
     elapsedtime: float
     startofsteadystate: float
     savemode: SaveMode
-    csum: cSum
-    stdev: StandardDeviation
+    sum: Item
+    stdev: Item
 
     def __init__(self, elpasedtime=0.0, startofsteadystate=0.0,
-                 savemode=SaveMode.FALSE, csum=cSum(), stdev=StandardDeviation()):
+                 savemode=SaveMode.FALSE, sum=Item(), stdev=Item()):
         self.elapsedtime = elpasedtime
         self.startofsteadystate = startofsteadystate
         self.savemode = savemode
-        self.csum = csum
+        self.sum = sum
         self.stdev = stdev
         pass
 
     def reset(self):
+        self.sum.reset()
+        self.stdev.reset()
+        pass
+
+    def initmodelspecificstatus(self):
+        if self.savemode is SaveMode.STAT or self.savemode is not SaveMode.STEADYSTAT:
+            
 
         pass

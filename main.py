@@ -24,6 +24,9 @@ import utils.DynamicUtils.dynamicutil as dynamicutil
 import model.robotmodel as robotmodel
 import model.sensormodel as sensormodel
 
+from utils.Basic.velocity import Velocity3D, Velocity2D
+from utils.ConfigUtils.outputfile import SaveMode
+
 # Functions definition, only used in main.py
 pass
 
@@ -43,7 +46,8 @@ def print_help():
           )
 
 
-def initialize(phasetimeline: phaselist.PhaseList, situparam: situation.SituationParam):
+def initialize(phasetimeline: phaselist.PhaseList,
+               situparam: situation.SituationParam):
     dynamicutil.initcondition(phasedata=phasetimeline[0], situparam=situparam)
 
     pass
@@ -57,6 +61,7 @@ if __name__ == '__main__':
     now = 0.0
     phasetimeline = [phase.PhaseData()]
     conditionreset = [True, True]
+    accelerations = [Velocity3D()]
 
     for i in sys.argv:
 
@@ -85,8 +90,7 @@ if __name__ == '__main__':
         OutputPath = outputfile.getconfig()
 
     OutputPath = outputfile.getconfig(item='OutputDirectory') + '/' + \
-                 datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + \
-                 OutputPath + '.csv'
+        datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + OutputPath + '.csv'
 
     # Check optional flag '-i', which defines the input file for situation
     # params
@@ -157,7 +161,7 @@ if __name__ == '__main__':
 
     statutil = stat.StatUtil()
     statutil.elapsedtime = now * situparam.deltaT - \
-                           5.0 - unitparam.communication.tdelay
+        5.0 - unitparam.communication.tdelay
 
     # Prepare everything before starting... Are you ready?
     initialize(phasetimeline=phaselist.PhaseList(), situparam=situparam)
@@ -166,12 +170,77 @@ if __name__ == '__main__':
     # agent number
     print('Simulation started with', situparam.agentnumber, 'agent(s). ')
     # size of area
-    print('Sizes of the starting area: %fcm * %fcm * %fcm' % situparam.initpos.x, situparam.initpos.y, situparam.initpos.z)
+    print('Sizes of the starting area: %fcm * %fcm * %fcm' %
+          situparam.initpos.x, situparam.initpos.y, situparam.initpos.z)
 
     # The real challenge starts!
-    statutil.elapsedtime = (now * situparam.deltaT) - 5.0 - unitparam.communication.tdelay
+    statutil.elapsedtime = (now * situparam.deltaT) - \
+        5.0 - unitparam.communication.tdelay
 
     statutil.reset()
+
+    outputmode = outputfile.OutputMode()
+
+    #
+    statutil.savemode = outputmode.savemodelspecifics
+
+    if outputmode.savetrajectories:
+        pass
+
+    if outputmode.saveinnerstates:
+        pass
+
+    if outputmode.savecollisions is not SaveMode.FALSE:
+        pass
+
+    if outputmode.savedistancebetweenunits is not SaveMode.FALSE:
+        if (outputmode.savedistancebetweenunits is SaveMode.STAT) \
+                or (outputmode.savedistancebetweenunits is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    if outputmode.savedistancebetweenneighbors is not SaveMode.FALSE:
+        if (outputmode.savedistancebetweenneighbors is SaveMode.STAT) \
+                or (outputmode.savedistancebetweenneighbors is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    if outputmode.savevelocity is not SaveMode.FALSE:
+        if (outputmode.savevelocity is SaveMode.STAT) \
+                or (outputmode.savevelocity is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    if outputmode.saveCoM is not SaveMode.FALSE:
+        if (outputmode.saveCoM is SaveMode.STAT) \
+                or (outputmode.saveCoM is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    if outputmode.savecorrelation is not SaveMode.FALSE:
+        if (outputmode.savecorrelation is SaveMode.STAT) \
+                or (outputmode.savecorrelation is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    if outputmode.savecollisionratio is not SaveMode.FALSE:
+        if (outputmode.savecollisionratio is SaveMode.STAT) \
+                or (outputmode.savecollisionratio is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    if outputmode.saveacceleration is not SaveMode.FALSE:
+        if (outputmode.saveacceleration is SaveMode.STAT) \
+                or (outputmode.saveacceleration is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    # Imagine 'accelerations' as a numberofagents*3 matrix (3 dims, x, y, z)
+    for i in range(situparam.agentnumber-1):
+        accelerations.append(Velocity3D())
+
+    if outputmode.savemodelspecifics is not SaveMode.FALSE:
+        statutil.initmodelspecificstatus()
 
     # Log printing
     print('[' + datetime.datetime.now().strftime("%H:%M:%S") + '] ' +

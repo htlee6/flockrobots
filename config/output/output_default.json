@@ -1,14 +1,14 @@
 {
   "OutputDirectory": "output",
-  "OutputFilename": "output",
+  "OutputFilename": "outputfile",
   "ifSaveDetail": {
-    "SaveDistanceBetweenUnits": "false",
-    "SaveDistanceBetweenNeighbours": "false",
-    "SaveVelocity": "stat",
-    "SaveCorrelation": "false",
-    "SaveCoM": "false",
-    "SaveCollisions": "stat",
-    "SaveCollisionRatio": "stat",
-    "SaveAcceleration": "false"
+    "SaveDistanceBetweenUnits": "FALSE",
+    "SaveDistanceBetweenNeighbours": "FALSE",
+    "SaveVelocity": "STAT",
+    "SaveCorrelation": "FALSE",
+    "SaveCoM": "FALSE",
+    "SaveCollisions": "STAT",
+    "SaveCollisionRatio": "STAT",
+    "SaveAcceleration": "FALSE"
   }
 }
