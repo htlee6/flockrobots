@@ -1,10 +1,8 @@
 # Modified by HoTen Lee
 
-# Import third-party packages required
+# Import built-in packages required
 import datetime
-import random
 import sys
-import csv
 
 # Import self-built packages required
 import utils.ConfigUtils.outputfile as outputfile
@@ -249,4 +247,5 @@ if __name__ == '__main__':
     # Create the output file & Write the result into file
     outputfile.generatefile(filepath=OutputPath)
 
+    # to test
     pass
