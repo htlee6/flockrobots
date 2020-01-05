@@ -72,3 +72,6 @@ class FlockParam:
         """
         return self
         pass
+
+    def refresh(self):
+        pass

@@ -115,3 +115,6 @@ class OutputMode:
             ifsavedetailjson['SaveCollisionRatio'])
         self.saveacceleration = str2savemode(
             ifsavedetailjson['SaveAcceleration'])
+
+
+

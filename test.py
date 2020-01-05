@@ -8,6 +8,14 @@ d = pd.PhaseData()
 d = l.data[0]
 d.randomphase(initsize=pd.Position3D(1, 2, 3), initcenter=pd.Position3D(1, 3, 5), fromagentno=3, toagentno=4, radius=1)
 '''
-t = outputfile.OutputMode()
+'''t = outputfile.OutputMode()
 t.usedefault()
+pass
+'''
+import utils.StatsticUtils.stat as stat
+
+a = stat.timeelapsedneararena
+b = stat.StatUtil()
+b.initmodelspecificstatus()
+a = stat.timeelapsedneararena
 pass
