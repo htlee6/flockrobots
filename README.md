@@ -4,4 +4,4 @@
 
 My work is the interpretion from C to Python, aiming at a more convenient interface for users to do flocking simulations. 
 
-Any questions, please email to `w29593617@gmail.com` for further discussion. 
+Any questions, please email to [`w29593617@gmail.com`](mailto:w29593617@gmail.com) for further discussion. 
