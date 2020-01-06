@@ -19,6 +19,7 @@ class PhaseData:
         self.agents = [Agent(idx=i) for i in range(agentnumber)]
 
     def getdefault(self):
+        # TODO: need to read from configuration files
         self.innerstates = [InnerState2D() for i in range(5)]
         self.agents = [Agent(idx=i) for i in range(10)]
         return self
@@ -75,12 +76,14 @@ class PhaseData:
 
                 stepcount = stepcount + 1
                 if stepcount > maxstep:
-                    raise TimeoutError(
-                        'Stepcount bigger than maxstep, please check! ')
+                    raise TimeoutError('Stepcount bigger than maxstep, please check! ')
 
             self.agents[i].velocity = Velocity3D()
             self.agents[i].coordinate = randpos
             arrangementcorrect = False
 
-    def __len__(self):
+    def agentnumber(self):
         return len(self.agents)
+
+    def innerstatenumber(self):
+        return len(self.innerstates)

@@ -23,8 +23,12 @@ import utils.DynamicUtils.dynamicutil as dynamicutil
 import model.robotmodel as robotmodel
 import model.sensormodel as sensormodel
 
+import utils.ComputeUtils.playground as playground
+
 from utils.Basic.velocity import Velocity3D, Velocity2D
 from utils.ConfigUtils.outputfile import SaveMode
+from utils.ParamUtils.flock import FlockParam
+from utils.StatsticUtils.stat import StatUtil
 
 # Functions definition, only used in main.py
 pass
@@ -45,11 +49,30 @@ def print_help():
           )
 
 
-def initialize(phasetimeline: phaselist.PhaseList,
-               situparam: situation.SituationParam):
-    dynamicutil.initcondition(phasedata=phasetimeline[0], situparam=situparam)
+def initialize(p_phasetimeline: phaselist.PhaseList,
+               p_situparam: situation.SituationParam,
+               p_flockparam: FlockParam,
+               p_statutil: StatUtil,
+               starttime: int):
 
-    pass
+    p_flockparam.refresh()
+
+    dynamicutil.initcondition(
+        phasedata=p_phasetimeline.data[0],
+        situparam=p_situparam)
+
+    # TODO: finish initialize() function
+    # initializephase(actualphase, flockparam, situparam)
+    init_starttime = starttime + \
+        round((5.0 + unitparam.communication.tdelay) / p_situparam.deltaT)
+    p_phasetimeline.wait(
+        time2wait=(
+            5 + unitparam.communication.tdelay),
+        h=p_situparam.deltaT)
+
+    # Match the steady state timestamps in the 2 corresponding structures.
+    p_statutil.startofsteadystate = p_situparam.startofsteadystate
+    return p_phasetimeline, p_situparam, p_flockparam, p_statutil, init_starttime
 
 
 def ifcreatefiles(oputmode: outputfile.OutputMode):
@@ -104,7 +127,7 @@ def ifcreatefiles(oputmode: outputfile.OutputMode):
 
         # This part in original version is redundant. I don't need this in my version.
         # It is doing the same thing with the outer 'if' code block.
-        ''' 
+        '''
         if (oputmode.savedistancebetweenunits is SaveMode.STAT) \
                 or (oputmode.savedistancebetweenunits is SaveMode.STEADYSTAT):
             with open('output/distance_between_units_stdev.csv', 'w+') as f_distbetweenunitsStdev:
@@ -204,7 +227,6 @@ if __name__ == '__main__':
     no_flockparams = 0
     now = 0.0
     timestep2store = 0
-    phasetimeline = [phase.PhaseData()]
     conditionreset = [True, True]
     accelerations = [Velocity3D()]
     collisions = 0
@@ -286,12 +308,12 @@ if __name__ == '__main__':
     # Compute 'timestep2store'
     timestep2store = int((stored_time / situparam.deltaT) - 1)
 
-    phasedata, flockparam, situparam, unitparam, windparam = robotmodel.initpreferredvelocity(
-        phasedata=phasenow,
-        flockparam=flockparam,
-        situparam=situparam,
-        unitparam=unitparam,
-        windparam=windparam)
+    phasedata, flockparam, situparam, unitparam, windparam = \
+        robotmodel.initpreferredvelocity(phasedata=phasenow,
+                                         flockparam=flockparam,
+                                         situparam=situparam,
+                                         unitparam=unitparam,
+                                         windparam=windparam)
 
     noises = sensormodel.initnoise(situparam.agentnumber)
     agentsindanger = [False] * situparam.agentnumber
@@ -300,8 +322,11 @@ if __name__ == '__main__':
     statutil.elapsedtime = now * situparam.deltaT - \
         5.0 - unitparam.communication.tdelay
 
+    phasetimeline = phaselist.PhaseList(timestep=timestep2store)
+
     # Prepare everything before starting... Are you ready?
-    initialize(phasetimeline=phaselist.PhaseList(), situparam=situparam)
+    phasetimeline, situparam, flockparam, statutil, now = initialize(
+        p_phasetimeline=phasetimeline, p_situparam=situparam, p_flockparam=flockparam, p_statutil=statutil, starttime=now)
 
     # Info to be printed...
     # agent number
@@ -332,14 +357,12 @@ if __name__ == '__main__':
         statutil.initmodelspecificstatus()
     flockparam.refresh()
 
-    while statutil.elapsedtime < situparam.simlength:
-        if now < timestep2store:
-            pass
-        else:
-            pass
-        if outputmode.savecollisions is SaveMode.STEADYSTAT and statutil.elapsedtime < situparam.startofsteadystate:
-            collisions = 0
-        pass
+    pg = playground.Playground(
+        situparam=situparam,
+        flockparam=flockparam,
+        windparam=windparam,
+        result=[])
+    pg.start()
 
     # Log printing
     print('[' + datetime.datetime.now().strftime("%H:%M:%S") + '] ' +
