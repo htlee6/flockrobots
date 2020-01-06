@@ -53,6 +53,22 @@ def initialize(phasetimeline: phaselist.PhaseList,
 
 
 def ifcreatefiles(oputmode: outputfile.OutputMode):
+    """
+    Files all stored in 'output' directory, including:
+
+    - posandvel.csv
+    - innerstates.csv
+    - collisions.csv
+    - distance_between_units.csv
+    - dist_between_units.csv
+    - velocity.csv
+    - CoM.csv
+    - correlation.csv
+    - collision_ratio.csv
+    - acceleration.csv
+    :param oputmode: outputmode
+    :return: None
+    """
     if oputmode.savetrajectories:
         with open('output/posandvel.csv', 'w+') as f_outphase:
             csv_outphase = csv.writer(f_outphase)
@@ -66,7 +82,7 @@ def ifcreatefiles(oputmode: outputfile.OutputMode):
                                    'Vz(cm/s)'])
 
     if oputmode.saveinnerstates:
-        with open('output/posandvel.csv', 'w+') as f_outinnerstates:
+        with open('output/innerstates.csv', 'w+') as f_outinnerstates:
             csv_outinnterstates = csv.writer(f_outphase)
             # TODO: used 'NumberOfInnerstates' here
             csv_outinnterstates.writerow(['time(s)'])
@@ -194,17 +210,13 @@ if __name__ == '__main__':
     collisions = 0
 
     for i in sys.argv:
-
         if i == '-h' or i == '--help':
             print_help()
             sys.exit(0)
-
         if i == '-u':
             no_agentparams = no_agentparams + 1
-
         if i == '-f':
             no_flockparams = no_flockparams + 1
-
         if no_agentparams > 1 or no_flockparams > 1:
             print('More than 1 agent/flock param files. Check twice! ')
             sys.exit(0)
@@ -233,7 +245,6 @@ if __name__ == '__main__':
         SituationConfigPath = 'default'
 
     '''Create a situation parameter instance'''
-
     situparam = situation.SituationParam(agentnumber=200)
     # agentnumber = 200 for test
     situparam = situparam.getdefault(filepath=SituationConfigPath)
@@ -245,7 +256,6 @@ if __name__ == '__main__':
         situparam.length2store = 10
 
     '''Create a flock parameter instance'''
-
     # define flock param config file
     FlockConfigPath = input(
         "3. Set flock config file path (Press Enter to use the default): ")
@@ -263,17 +273,14 @@ if __name__ == '__main__':
     unitparam = unit.UnitParam()
 
     '''Create a phase data instance'''
-
     # init a 'PhaseData' instance
     phasenow = phase.PhaseData()
 
     '''Create a wind parameter instance'''
-
     # init a 'WindParam' instance
     windparam = wind.WindParam(vx=1.0, vy=2.0)
 
     '''Several controlling parameters essential in simulation'''
-
     # define the variable 'stored_time'
     stored_time = float(20.0 + situparam.length2store)
     # Compute 'timestep2store'
@@ -314,6 +321,7 @@ if __name__ == '__main__':
     #
     statutil.savemode = outputmode.savemodelspecifics
 
+    # Create a lot of files to store the simulation data
     ifcreatefiles(outputmode)
 
     # Imagine 'accelerations' as a numberofagents*3 matrix (3 dims, x, y, z)
