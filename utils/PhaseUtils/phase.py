@@ -1,6 +1,6 @@
 from utils.Basic.position import Position2D, Position3D
 from utils.Basic.velocity import Velocity2D, Velocity3D
-from utils.Basic.innerstate import InnerState2D
+from utils.Basic.innerstate import InnerState2D, InnerState3D
 from utils.Basic.agent import Agent
 import random
 
@@ -9,18 +9,17 @@ class PhaseData:
 
     # TODO:to be finished
     agents: list
-    innerstates: list
 
     def __init__(self, innerstatenumber=0, agentnumber=0):
         # self.innerstates = [defaultinnerstate for i in range(self.innerstatenumber)]
-        self.innerstates = [InnerState2D() for i in range(innerstatenumber)]
+        # self.innerstates = [InnerState3D() for i in range(innerstatenumber)]
 
         # self.agents = [defalutagent.__init__(idx=i) for i in range(self.agentnumber)]
         self.agents = [Agent(idx=i) for i in range(agentnumber)]
 
     def getdefault(self):
         # TODO: need to read from configuration files
-        self.innerstates = [InnerState2D() for i in range(5)]
+        # self.innerstates = [InnerState2D() for i in range(5)]
         self.agents = [Agent(idx=i) for i in range(10)]
         return self
 
@@ -82,8 +81,8 @@ class PhaseData:
             self.agents[i].coordinate = randpos
             arrangementcorrect = False
 
-    def agentnumber(self):
+    def noagentsinphase(self):
         return len(self.agents)
 
-    def innerstatenumber(self):
-        return len(self.innerstates)
+    def noinnerstatesinphase(self):
+        return self.agents[0].innerstatenumber

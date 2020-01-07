@@ -1,5 +1,6 @@
 import json
 from utils.Basic.position import Position3D
+from utils.Basic.velocity import Velocity3D
 
 
 class SituationParam:
@@ -50,8 +51,12 @@ class SituationParam:
         file_content = open(filepath)
         thejson = json.load(fp=file_content)
 
+        jsonx = list(thejson['InitPosition'].values())[0]
+        jsony = list(thejson['InitPosition'].values())[1]
+        jsonz = list(thejson['InitPosition'].values())[2]
+
         newsituparam = SituationParam(agentnumber=thejson['AgentNumber'], simlength=thejson['SimulationLength'],
-                                      initpos=list(thejson['InitPosition'].values()), deltaT=thejson['deltaT'],
+                                      initpos=Position3D(x=jsonx, y=jsony, z=jsonz), deltaT=thejson['deltaT'],
                                       dangerousradius=thejson['DangerousRadius'], length2store=thejson['LengthToStore'],
                                       startofsteadystate=thejson['StartOfSteadyState'])
 

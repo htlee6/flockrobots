@@ -23,6 +23,10 @@ class Velocity3D(Velocity2D):
         self.vy = vy
         self.vz = vz
 
+        '''self.vx = velcotiy3dlist['vx1']
+        self.vy = velcotiy3dlist['vy1']
+        self.vz = velcotiy3dlist['vz1']'''
+
     def __str__(self):
         print('The 3D velocity vector is [%f, %f, %f]. ' % self.vx, self.vy, self.vz)
 

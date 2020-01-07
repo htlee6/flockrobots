@@ -1,5 +1,6 @@
 import json
 import csv
+import os
 from utils.StatsticUtils.stat import SaveMode
 
 
@@ -88,6 +89,7 @@ class OutputMode:
                  saveaccerleration=SaveMode.STAT,
                  savemodelspecific=SaveMode.STAT):
 
+        self.savetrajectories = savetrajectories
         self.saveacceleration = saveaccerleration
         self.saveinnerstates = saveinnerstates
         self.savedistancebetweenunits = savedistancebetweenunits
@@ -117,4 +119,154 @@ class OutputMode:
             ifsavedetailjson['SaveAcceleration'])
 
 
+def createdatastorefiles(oputmode: OutputMode, **symbolsyoulike):
+    """
+    Files all stored in 'output' directory, including:
 
+    - posandvel.csv
+    - innerstates.csv
+    - collisions.csv
+    - distance_between_units.csv
+    - dist_between_units.csv
+    - velocity.csv
+    - CoM.csv
+    - correlation.csv
+    - collision_ratio.csv
+    - acceleration.csv
+    :param oputmode: outputmode
+    :return: None
+    """
+    if len(symbolsyoulike) is not 0:
+        symbol = str(symbolsyoulike['symbol'])
+        try:
+            os.mkdir('output/'+symbol)
+        except OSError:
+            print('Can\'t create a new folder with symbol. ')
+    else:
+        symbol = ''
+
+    if oputmode.savetrajectories:
+        with open('output/'+symbol+'/posandvel.csv', 'w+') as f_outphase:
+            csv_outphase = csv.writer(f_outphase)
+            csv_outphase.writerow(['time(s)',
+                                   'index',
+                                   'x(cm)',
+                                   'y(cm)',
+                                   'z(cm)',
+                                   'Vx(cm/s)',
+                                   'Vy(cm/s)',
+                                   'Vz(cm/s)'])
+
+    if oputmode.saveinnerstates:
+        with open('output/'+symbol+'/innerstates.csv', 'w+') as f_outinnerstates:
+            csv_outinnterstates = csv.writer(f_outinnerstates)
+            csv_outinnterstates.writerow(['time(s)'])
+
+    if oputmode.savecollisions is not SaveMode.FALSE:
+        with open('output/'+symbol+'/collisions.csv', 'w+') as f_collisions:
+            csv_collision = csv.writer(f_collisions)
+            csv_collision.writerow(['time(s)',
+                                    'number_of_collisions'])
+
+    if oputmode.savedistancebetweenunits is not SaveMode.FALSE:
+        with open('output/'+symbol+'/distance_between_units.csv', 'w+') as f_distbetweenunits:
+            csv_distbetweenunits = csv.writer(f_distbetweenunits)
+            csv_distbetweenunits.writerow(['time(s)',
+                                           'avg_dist_between_units(cm)',
+                                           'stdev_dist_between_units(cm)',
+                                           'min_dist_between_units(cm)',
+                                           'max_dist_between_units(cm)'])
+
+        # This part in original version is redundant. I don't need this in my version.
+        # It is doing the same thing with the outer 'if' code block.
+        '''
+        if (oputmode.savedistancebetweenunits is SaveMode.STAT) \
+                or (oputmode.savedistancebetweenunits is SaveMode.STEADYSTAT):
+            with open('output/distance_between_units_stdev.csv', 'w+') as f_distbetweenunitsStdev:
+                csv_distbetwunitsStdev = csv.writer(f_distbetweenunitsStdev)
+                csv_distbetwunitsStdev.writerow(['time(s)',
+                                                 'avg_dist_between_units(cm)',
+                                                 'stdev_dist_between_units(cm)',
+                                                 'min_dist_between_units(cm)',
+                                                 'max_dist_between_units(cm)'])
+        '''
+
+    if oputmode.savedistancebetweenneighbors is not SaveMode.FALSE:
+        with open('output/'+symbol+'/dist_between_neighbours.csv', 'w+') as f_distbetweenneighbours:
+            csv_distbetweenneighbours = csv.writer(f_distbetweenneighbours)
+            csv_distbetweenneighbours.writerow(['time(s)',
+                                                'avg_dist_between_neighbours(cm)',
+                                                'stdev_dist_between_neighbours(cm)',
+                                                'max_dist_between_neighbours(cm)',
+                                                'min_dist_between_neighbours(cm)'])
+
+        if (oputmode.savedistancebetweenneighbors is SaveMode.STAT) \
+                or (oputmode.savedistancebetweenneighbors is SaveMode.STEADYSTAT):
+            pass
+
+        pass
+
+    if oputmode.savevelocity is not SaveMode.FALSE:
+        with open('output/'+symbol+'/velocity.csv', 'w+') as f_velocity:
+            csv_velocity = csv.writer(f_velocity)
+            csv_velocity.writerow(['time(s)',
+                                   'avg_velocity(cm/s)',
+                                   'stdev_velocity(cm/s)',
+                                   'min_velocity(cm/s)',
+                                   'max_velocity(cm/s)'])
+        if (oputmode.savevelocity is SaveMode.STAT) \
+                or (oputmode.savevelocity is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    if oputmode.saveCoM is not SaveMode.FALSE:
+        with open('output/'+symbol+'/CoM.csv', 'w+') as f_CoM:
+            csv_CoM = csv.writer(f_CoM)
+            csv_CoM.writerow(['time(s)',
+                              'CoM_x(cm)',
+                              'CoM_y(cm)',
+                              'CoM_z(cm)'])
+        if (oputmode.saveCoM is SaveMode.STAT) \
+                or (oputmode.saveCoM is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    if oputmode.savecorrelation is not SaveMode.FALSE:
+        with open('output/'+symbol+'/correlation.csv', 'w+') as f_correlation:
+            csv_correlation = csv.writer(f_correlation)
+            csv_correlation.writerow(['time(s)',
+                                      'avg_velocity_correlation',
+                                      'stdev_normalized_velocity_scalar_product',
+                                      'min_normalized_velocity_scalar_product',
+                                      'max_normalized_velocity_scalar_product'])
+        if (oputmode.savecorrelation is SaveMode.STAT) \
+                or (oputmode.savecorrelation is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    if oputmode.savecollisionratio is not SaveMode.FALSE:
+        with open('output/'+symbol+'/collision_ratio.csv', 'w+') as f_collisionratio:
+            csv_collisionration = csv.writer(f_collisionratio)
+            csv_collisionration.writerow(['time',
+                                          'ratio_of_collision'])
+        if (oputmode.savecollisionratio is SaveMode.STAT) \
+                or (oputmode.savecollisionratio is SaveMode.STEADYSTAT):
+            pass
+        pass
+
+    if oputmode.saveacceleration is not SaveMode.FALSE:
+        with open('output/'+symbol+'/acceleration.csv', 'w+') as f_acceleration:
+            csv_acceleration = csv.writer(f_acceleration)
+            csv_acceleration.writerow(['time(s)',
+                                       'avg_acceleration(cm/s2)',
+                                       'stdev_acceleration(cm/s2)',
+                                       'min_acceleration(cm/s2)',
+                                       'max_acceleration(cm/s2)',
+                                       'Length_of_acceleration(cm/s2)',
+                                       'avg_acceleration_x(cm/s2)',
+                                       'avg_acceleration_y(cm/s2)',
+                                       'avg_acceleration_z(cm/s2)'])
+        if (oputmode.saveacceleration is SaveMode.STAT) \
+                or (oputmode.saveacceleration is SaveMode.STEADYSTAT):
+            pass
+        pass
