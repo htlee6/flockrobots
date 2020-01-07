@@ -75,11 +75,11 @@ class StatUtil:
         self.stdev.reset()
         pass
 
-    def initmodelspecificstatus(self):
+    def initmodelspecificstatus(self, currentdirectory: str):
 
-        f_distancefromarena = open('output/distance_from_arena.csv', 'w+')
-        f_clusterdependentcorrelation = open('output/cluster_dependent_correlation.csv', 'w+')
-        f_clusterparameters = open('output/cluster_parameters.csv', 'w+')
+        f_distancefromarena = open(currentdirectory+'/distance_from_arena.csv', 'w+')
+        f_clusterdependentcorrelation = open(currentdirectory+'/cluster_dependent_correlation.csv', 'w+')
+        f_clusterparameters = open(currentdirectory+'/cluster_parameters.csv', 'w+')
 
         # preparations
         title_distancefromarena = [
@@ -117,9 +117,9 @@ class StatUtil:
             title_clusterparameters)
 
         if self.savemode is SaveMode.STAT or self.savemode is SaveMode.STEADYSTAT:
-            f_distancefromarena_stdev = open('output/distance_from_arena_stdev.csv', 'w+')
-            f_clusterdependentcorrelation_stdev = open('output/cluster_dependent_correlation_stdev.csv', 'w+')
-            f_clusterparameters_stdev = open('output/cluster_parameters_stdev.csv', 'w+')
+            f_distancefromarena_stdev = open(currentdirectory+'/distance_from_arena_stdev.csv', 'w+')
+            f_clusterdependentcorrelation_stdev = open(currentdirectory+'/cluster_dependent_correlation_stdev.csv', 'w+')
+            f_clusterparameters_stdev = open(currentdirectory+'/cluster_parameters_stdev.csv', 'w+')
 
             # preparations
             title_distancefromarena_stdev = [

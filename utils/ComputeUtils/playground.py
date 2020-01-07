@@ -25,7 +25,7 @@ class Playground:
         self.result = result
         pass
 
-    def start(self, timestep2store: int):
+    def gamestart(self, timestep2store: int):
         # local variable definition
         now = 0
 

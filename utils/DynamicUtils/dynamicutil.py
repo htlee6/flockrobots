@@ -61,6 +61,7 @@ def randomphase(pl: PhaseList, initsize: Position3D, initcenter: Position3D,
 
 
 def initcondition(phasedata: PhaseData, situparam: situation.SituationParam):
+    phasedata.randomphase()
     pass
 
 

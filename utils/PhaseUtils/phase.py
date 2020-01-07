@@ -33,7 +33,15 @@ class PhaseData:
 
     def randomphase(self, initsize: Position3D, initcenter: Position3D,
                     fromagentno: int, toagentno: int, radius: float):
+        """
 
+        :param initsize:
+        :param initcenter:
+        :param fromagentno:
+        :param toagentno:
+        :param radius:
+        :return:
+        """
         # variables
 
         # agent number of initial phase (whose index is 0)

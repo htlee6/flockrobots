@@ -57,18 +57,15 @@ def initialize(p_phasetimeline: phaselist.PhaseList,
 
     p_flockparam.refresh()
 
-    dynamicutil.initcondition(
-        phasedata=p_phasetimeline.data[0],
-        situparam=p_situparam)
+    dynamicutil.initcondition(phasedata=p_phasetimeline.data[0], situparam=p_situparam)
 
-    # TODO: finish initialize() function
+    # TODO: finish initializephase() function
     # initializephase(actualphase, flockparam, situparam)
+
+
     init_starttime = starttime + \
         round((5.0 + unitparam.communication.tdelay) / p_situparam.deltaT)
-    p_phasetimeline.wait(
-        time2wait=(
-            5 + unitparam.communication.tdelay),
-        h=p_situparam.deltaT)
+    p_phasetimeline.wait(time2wait=(5 + unitparam.communication.tdelay), h=p_situparam.deltaT)
 
     # Match the steady state timestamps in the 2 corresponding structures.
     p_statutil.startofsteadystate = p_situparam.startofsteadystate
@@ -86,6 +83,7 @@ if __name__ == '__main__':
     accelerations = [Velocity3D()]
     collisions = 0
 
+    # search for some useful parameters in sys.argv
     for i in sys.argv:
         if i == '-h' or i == '--help':
             print_help()
@@ -98,8 +96,7 @@ if __name__ == '__main__':
             print('More than 1 agent/flock param files. Check twice! ')
             sys.exit(0)
 
-    OutputPath = input(
-        '1. Set output file path (Press Enter to use the default): ')
+    OutputPath = input('1. Set output file path (Press Enter to use the default): ')
     if OutputPath == '':
         # aka input nothing/pressed Enter,
         # so we will use the default settings reading from the output config
@@ -126,6 +123,7 @@ if __name__ == '__main__':
     # agentnumber = 200 for test
     situparam = situparam.getdefault(filepath=SituationConfigPath)
 
+    # some limitations on member variables of object --'situparam'
     if situparam.simlength < 50:
         situparam.simlength = 50
 
@@ -134,8 +132,7 @@ if __name__ == '__main__':
 
     '''Create a flock parameter instance'''
     # define flock param config file
-    FlockConfigPath = input(
-        "3. Set flock config file path (Press Enter to use the default): ")
+    FlockConfigPath = input("3. Set flock config file path (Press Enter to use the default): ")
     if FlockConfigPath == '':
         FlockConfigPath = 'default'
 
@@ -181,14 +178,14 @@ if __name__ == '__main__':
 
     # Prepare everything before starting... Are you ready?
     phasetimeline, situparam, flockparam, statutil, now \
-        = initialize(p_phasetimeline=phasetimeline, p_situparam=situparam, p_flockparam=flockparam,
-                     p_statutil=statutil, starttime=int(now))
+        = initialize(p_phasetimeline=phasetimeline, p_situparam=situparam,
+                     p_flockparam=flockparam, p_statutil=statutil, starttime=int(now))
 
     # Info to be printed...
     # agent number
     print('Simulation started with', situparam.agentnumber, 'agent(s). ')
     # size of area
-    print('Sizes of the starting area: '+str(situparam.initpos.x)+'cm*'+str(situparam.initpos.y) +'cm*'+str(situparam.initpos.z)+'cm')
+    print('Sizes of the starting area: '+str(situparam.initpos.x)+'cm * '+str(situparam.initpos.y) +'cm * '+str(situparam.initpos.z)+'cm')
 
     # The real challenge starts!
     statutil.elapsedtime = (now * situparam.deltaT) - \
@@ -202,14 +199,14 @@ if __name__ == '__main__':
     statutil.savemode = outputmode.savemodelspecifics
 
     # Create a lot of files to store the simulation data
-    outputfile.createdatastorefiles(outputmode, symbol=datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
+    currentdir = outputfile.createdatastorefiles(outputmode, symbol=datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
 
     # Imagine 'accelerations' as a numberofagents*3 matrix (3 dims, x, y, z)
     for i in range(situparam.agentnumber - 1):
         accelerations.append(Velocity3D())
 
     if outputmode.savemodelspecifics is not SaveMode.FALSE:
-        statutil.initmodelspecificstatus()
+        statutil.initmodelspecificstatus(currentdirectory=currentdir)
     flockparam.refresh()
 
     pg = playground.Playground(
@@ -218,7 +215,7 @@ if __name__ == '__main__':
         windparam=windparam,
         statutil=statutil,
         result=[])
-    pg.start()
+    pg.gamestart(timestep2store=timestep2store)
 
     # Log printing
     print('[' + datetime.datetime.now().strftime("%H:%M:%S") + '] ' +

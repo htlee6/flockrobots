@@ -25,6 +25,14 @@ def getconfig(filepath='default',
     # print(output_config)
 
 
+'''def setpath(hint: str):
+    res = input(hint)
+    if res is '':
+        res = 'default'
+    else:
+        pass'''
+
+
 def generatefile(filepath):
 
     try:
@@ -145,8 +153,9 @@ def createdatastorefiles(oputmode: OutputMode, **symbolsyoulike):
     else:
         symbol = ''
 
+    currentdir = 'output/'+symbol
     if oputmode.savetrajectories:
-        with open('output/'+symbol+'/posandvel.csv', 'w+') as f_outphase:
+        with open(currentdir+'/posandvel.csv', 'w+') as f_outphase:
             csv_outphase = csv.writer(f_outphase)
             csv_outphase.writerow(['time(s)',
                                    'index',
@@ -158,18 +167,18 @@ def createdatastorefiles(oputmode: OutputMode, **symbolsyoulike):
                                    'Vz(cm/s)'])
 
     if oputmode.saveinnerstates:
-        with open('output/'+symbol+'/innerstates.csv', 'w+') as f_outinnerstates:
+        with open(currentdir+'/innerstates.csv', 'w+') as f_outinnerstates:
             csv_outinnterstates = csv.writer(f_outinnerstates)
             csv_outinnterstates.writerow(['time(s)'])
 
     if oputmode.savecollisions is not SaveMode.FALSE:
-        with open('output/'+symbol+'/collisions.csv', 'w+') as f_collisions:
+        with open(currentdir+'/collisions.csv', 'w+') as f_collisions:
             csv_collision = csv.writer(f_collisions)
             csv_collision.writerow(['time(s)',
                                     'number_of_collisions'])
 
     if oputmode.savedistancebetweenunits is not SaveMode.FALSE:
-        with open('output/'+symbol+'/distance_between_units.csv', 'w+') as f_distbetweenunits:
+        with open(currentdir+'/distance_between_units.csv', 'w+') as f_distbetweenunits:
             csv_distbetweenunits = csv.writer(f_distbetweenunits)
             csv_distbetweenunits.writerow(['time(s)',
                                            'avg_dist_between_units(cm)',
@@ -192,7 +201,7 @@ def createdatastorefiles(oputmode: OutputMode, **symbolsyoulike):
         '''
 
     if oputmode.savedistancebetweenneighbors is not SaveMode.FALSE:
-        with open('output/'+symbol+'/dist_between_neighbours.csv', 'w+') as f_distbetweenneighbours:
+        with open(currentdir+'/dist_between_neighbours.csv', 'w+') as f_distbetweenneighbours:
             csv_distbetweenneighbours = csv.writer(f_distbetweenneighbours)
             csv_distbetweenneighbours.writerow(['time(s)',
                                                 'avg_dist_between_neighbours(cm)',
@@ -207,7 +216,7 @@ def createdatastorefiles(oputmode: OutputMode, **symbolsyoulike):
         pass
 
     if oputmode.savevelocity is not SaveMode.FALSE:
-        with open('output/'+symbol+'/velocity.csv', 'w+') as f_velocity:
+        with open(currentdir+'/velocity.csv', 'w+') as f_velocity:
             csv_velocity = csv.writer(f_velocity)
             csv_velocity.writerow(['time(s)',
                                    'avg_velocity(cm/s)',
@@ -220,7 +229,7 @@ def createdatastorefiles(oputmode: OutputMode, **symbolsyoulike):
         pass
 
     if oputmode.saveCoM is not SaveMode.FALSE:
-        with open('output/'+symbol+'/CoM.csv', 'w+') as f_CoM:
+        with open(currentdir+'/CoM.csv', 'w+') as f_CoM:
             csv_CoM = csv.writer(f_CoM)
             csv_CoM.writerow(['time(s)',
                               'CoM_x(cm)',
@@ -232,7 +241,7 @@ def createdatastorefiles(oputmode: OutputMode, **symbolsyoulike):
         pass
 
     if oputmode.savecorrelation is not SaveMode.FALSE:
-        with open('output/'+symbol+'/correlation.csv', 'w+') as f_correlation:
+        with open(currentdir+'/correlation.csv', 'w+') as f_correlation:
             csv_correlation = csv.writer(f_correlation)
             csv_correlation.writerow(['time(s)',
                                       'avg_velocity_correlation',
@@ -245,7 +254,7 @@ def createdatastorefiles(oputmode: OutputMode, **symbolsyoulike):
         pass
 
     if oputmode.savecollisionratio is not SaveMode.FALSE:
-        with open('output/'+symbol+'/collision_ratio.csv', 'w+') as f_collisionratio:
+        with open(currentdir+'/collision_ratio.csv', 'w+') as f_collisionratio:
             csv_collisionration = csv.writer(f_collisionratio)
             csv_collisionration.writerow(['time',
                                           'ratio_of_collision'])
@@ -255,7 +264,7 @@ def createdatastorefiles(oputmode: OutputMode, **symbolsyoulike):
         pass
 
     if oputmode.saveacceleration is not SaveMode.FALSE:
-        with open('output/'+symbol+'/acceleration.csv', 'w+') as f_acceleration:
+        with open(currentdir+'/acceleration.csv', 'w+') as f_acceleration:
             csv_acceleration = csv.writer(f_acceleration)
             csv_acceleration.writerow(['time(s)',
                                        'avg_acceleration(cm/s2)',
@@ -270,3 +279,5 @@ def createdatastorefiles(oputmode: OutputMode, **symbolsyoulike):
                 or (oputmode.saveacceleration is SaveMode.STEADYSTAT):
             pass
         pass
+
+    return currentdir
