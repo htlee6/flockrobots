@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dc56a2ff-553b-46ca-a532-de1922726955" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/Basic/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/Basic/agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/Basic/velocity.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/Basic/velocity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/ConfigUtils/outputfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/ConfigUtils/outputfile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/ParamUtils/situation.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/ParamUtils/situation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/PhaseUtils/phase.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/PhaseUtils/phase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/PhaseUtils/phaselist.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/PhaseUtils/phaselist.py" afterDir="false" />
-    </list>
+    <list default="true" id="dc56a2ff-553b-46ca-a532-de1922726955" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -183,7 +174,7 @@
       <workItem from="1578186239060" duration="7575000" />
       <workItem from="1578206923632" duration="8132000" />
       <workItem from="1578290016678" duration="11355000" />
-      <workItem from="1578321973411" duration="7997000" />
+      <workItem from="1578321973411" duration="8553000" />
     </task>
     <servers />
   </component>
