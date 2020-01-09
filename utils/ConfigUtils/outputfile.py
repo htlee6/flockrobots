@@ -19,8 +19,7 @@ def getconfig(filepath='default',
     config_file = open(filepath)
     output_config = json.load(fp=config_file)
 
-    # TODO: Not finished: when the item user want is in deeper level of the
-    # JSON file
+    # TODO: Not finished: when the item user want is in deeper level of the JSON file
     return output_config[item]
     # print(output_config)
 

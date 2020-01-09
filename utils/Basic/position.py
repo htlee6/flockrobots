@@ -25,6 +25,13 @@ class Position2D:
         """
         return math.sqrt(pow(self.x, 2) + pow(self.y, 2))
 
+    def readfromlist(self, l: list):
+        """"""
+        for i in l:
+            if type(i) is not float and type(i) is not int:
+                raise TypeError('Elements in the list should all be int or float type. ')
+        return Position2D(x=float(l[0]), y=float(l[1]))
+
 
 class Position3D(Position2D):
 
@@ -50,7 +57,9 @@ class Position3D(Position2D):
         """
         return math.sqrt(pow(self.x, 2) + pow(self.y, 2) + pow(self.z, 2))
 
-
-
-
-
+    def readfromlist(self, l: list):
+        """"""
+        for i in l:
+            if type(i) is not float and type(i) is not int:
+                raise TypeError('Elements in the list should all be int or float type. ')
+        return Position2D(x=float(l[0]), y=float(l[1]), z=float(l[2]))

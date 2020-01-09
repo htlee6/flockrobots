@@ -3,29 +3,21 @@
 # Import built-in packages required
 import datetime
 import sys
-import csv
-
-# Import self-built packages required
-import utils.ConfigUtils.outputfile as outputfile
-
-import utils.ParamUtils.situation as situation
-import utils.ParamUtils.flock as flock
-import utils.ParamUtils.unit as unit
-import utils.ParamUtils.wind as wind
-
-import utils.PhaseUtils.phase as phase
-import utils.PhaseUtils.phaselist as phaselist
-
-import utils.StatsticUtils.stat as stat
-
-import utils.DynamicUtils.dynamicutil as dynamicutil
 
 import model.robotmodel as robotmodel
 import model.sensormodel as sensormodel
-
 import utils.ComputeUtils.playground as playground
-
-from utils.Basic.velocity import Velocity3D, Velocity2D
+# Import self-built packages required
+import utils.ConfigUtils.outputfile as outputfile
+import utils.DynamicUtils.dynamicutil as dynamicutil
+import utils.ParamUtils.flock as flock
+import utils.ParamUtils.situation as situation
+import utils.ParamUtils.unit as unit
+import utils.ParamUtils.wind as wind
+import utils.PhaseUtils.phase as phase
+import utils.PhaseUtils.phaselist as phaselist
+import utils.StatsticUtils.stat as stat
+from utils.Basic.velocity import Velocity3D
 from utils.ConfigUtils.outputfile import SaveMode
 from utils.ParamUtils.flock import FlockParam
 from utils.StatsticUtils.stat import StatUtil
@@ -57,11 +49,10 @@ def initialize(p_phasetimeline: phaselist.PhaseList,
 
     p_flockparam.refresh()
 
-    dynamicutil.initcondition(phasedata=p_phasetimeline.data[0], situparam=p_situparam)
+    p_phasetimeline.data[0] = dynamicutil.initcondition(phasedata=p_phasetimeline.data[0], situparam=p_situparam)
 
     # TODO: finish initializephase() function
-    # initializephase(actualphase, flockparam, situparam)
-
+    initializephase(actualphase, flockparam, situparam)
 
     init_starttime = starttime + \
         round((5.0 + unitparam.communication.tdelay) / p_situparam.deltaT)
