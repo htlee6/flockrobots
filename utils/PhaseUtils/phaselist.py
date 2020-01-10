@@ -21,6 +21,9 @@ class PhaseList:
     def randomphaselist(self):
         pass
 
+    def getagentcoordinateinphase(self, timestep: int, agentno: int):
+        return self.data[timestep].getagentcoordinates(agentno=agentno)
+
     def wait(self, time2wait: float, h: float):
 
         for i in range(1, int((1 + time2wait) / h)):

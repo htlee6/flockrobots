@@ -1,6 +1,7 @@
 import math
 import numpy as np
 
+
 class Position2D:
 
     x: float
@@ -12,6 +13,12 @@ class Position2D:
 
     def __str__(self):
         return '[%f, %f]' % (self.x, self.y)
+
+    def __add__(self, toaddpos: 'Position2D'):
+        return Position2D(self.x+toaddpos.x, self.y+toaddpos.y)
+
+    def __sub__(self, tosubpos: 'Position2D'):
+        return Position2D(self.x-tosubpos.x, self.y-tosubpos.y)
 
     def positiondiff(self, pos: 'Position2D'):
         """
@@ -28,12 +35,12 @@ class Position2D:
         """
         return math.sqrt(pow(self.x, 2) + pow(self.y, 2))
 
-    def readfromlist(self, l: list):
+    def readfromlist(self, toread: list):
         """"""
-        for i in l:
+        for i in toread:
             if type(i) is not float and type(i) is not int:
                 raise TypeError('Elements in the list should all be int or float type. ')
-        return Position2D(x=float(l[0]), y=float(l[1]))
+        return Position2D(x=float(toread[0]), y=float(toread[1]))
 
 
 class Position3D(Position2D):
@@ -48,10 +55,16 @@ class Position3D(Position2D):
     def __str__(self):
         return '[%f, %f, %f]' % (self.x, self.y, self.z)
 
+    def __add__(self, toaddpos: 'Position3D'):
+        return Position3D(self.x+toaddpos.x, self.y+toaddpos.y, self.z+toaddpos.z)
+
+    def __sub__(self, tosubpos: 'Position3D'):
+        return Position3D(self.x-tosubpos.x, self.y-tosubpos.y, self.z-tosubpos.z)
+
     def positiondiff(self, pos: 'Position3D'):
         """
 
-        :param pos:
+        :param pos:s
         :return:
         """
         return Position3D(self.x - pos.x, self.y - pos.y, self.z - pos.z)
@@ -63,12 +76,12 @@ class Position3D(Position2D):
         """
         return math.sqrt(pow(self.x, 2) + pow(self.y, 2) + pow(self.z, 2))
 
-    def readfromlist(self, l: list):
+    def readfromlist(self, toread: list):
         """"""
-        for i in l:
+        for i in toread:
             if type(i) is not float and type(i) is not int:
                 raise TypeError('Elements in the list should all be int or float type. ')
-        return Position2D(x=float(l[0]), y=float(l[1]), z=float(l[2]))
+        return Position2D(x=float(toread[0]), y=float(toread[1]), z=float(toread[2]))
 
 
 def ifpure(list2judge: list, typeexpected: type):

@@ -27,6 +27,9 @@ class Phase:
         self.agents = [Agent(idx=i) for i in range(10)]
         return self
 
+    def getagentcoordinates(self, agentno: int):
+        return self.agents[agentno].coordinate
+
     def random(self, fromno: int, tono: int):
         for i in range(fromno, tono):
 
@@ -49,7 +52,7 @@ class Phase:
         # variables
 
         # agent number of initial phase (whose index is 0)
-        maxstep = 100 * len(self)
+        maxstep = 100 * self.noagentsinphase()
         # which means -- is arrangement correct?
         arrangementcorrect = False
         #
@@ -99,15 +102,32 @@ class Phase:
     def noinnerstatesinphase(self):
         return self.agents[0].innerstatenumber
 
-    def placeagentsonXYplane(self):
+    def placeagentsonXYplane(self, xsize: float, ysize: float, xcenter: float, ycenter: float, zcenter: float, fromagentno: int, toagentno: int, radius: float):
+        arrangementcorrect = False
+        stepcount = 0
+        maxstep = 100 * self.noagentsinphase()
+        for i in range(fromagentno, toagentno):
+            while arrangementcorrect is False:
+                arrangementcorrect = True
+                agentcoordinate = Position3D(x=xcenter+random.uniform(-xsize/2, xsize/2),
+                                             y=ycenter+random.uniform(-ysize/2, ysize/2),
+                                             z=zcenter)
+            for j in range(self.noagentsinphase()):
+                if i == j:
+                    j = toagentno - 1
+                    continue
+                tmpcoordinate = self.agents[j].coordinate
+                
+
 
 def initializephase(phase: Phase, flockparam: FlockParam, situparam: SituationParam):
     # finished part
-    arena = ArenaList(maxarenacount=10, content=[])
-    arena.readfromfile(toreadlist=['triangle', 'pentagon1', 'pentagon2', 'octagon'])
-    obstacle = ObstacleList(maxobs=10, content=[])
-    obstacle.readfromfile(toreadlist=['leftrectangle', 'rightrectangle', 'pentagon1'])
+    arenas = ArenaList(maxarenacount=10, content=[])
+    arenas.readfromfile(toreadlist=['triangle', 'pentagon1', 'pentagon2', 'octagon'])
+    obstacles = ObstacleList(maxobs=10, content=[])
+    obstacles.readfromfile(toreadlist=['leftrectangle', 'rightrectangle', 'pentagon1'])
+    phase.randomphase()
     pass
-    # not finished yet
+    # TODO not finished yet
 
     return
