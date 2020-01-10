@@ -1,11 +1,15 @@
-from utils.Basic.position import Position2D, Position3D
-from utils.Basic.velocity import Velocity2D, Velocity3D
-from utils.Basic.innerstate import InnerState2D, InnerState3D
-from utils.Basic.agent import Agent
 import random
 
+from utils.Basic.agent import Agent
+from utils.Basic.position import Position3D
+from utils.Basic.velocity import Velocity3D
+from utils.ParamUtils.flock import FlockParam
+from utils.ParamUtils.situation import SituationParam
+from utils.ParamUtils.arena import Arena, ArenaList
+from utils.ParamUtils.obstacle import Obstacle, ObstacleList
 
-class PhaseData:
+
+class Phase:
 
     # TODO:to be finished
     agents: list
@@ -94,3 +98,16 @@ class PhaseData:
 
     def noinnerstatesinphase(self):
         return self.agents[0].innerstatenumber
+
+    def placeagentsonXYplane(self):
+
+def initializephase(phase: Phase, flockparam: FlockParam, situparam: SituationParam):
+    # finished part
+    arena = ArenaList(maxarenacount=10, content=[])
+    arena.readfromfile(toreadlist=['triangle', 'pentagon1', 'pentagon2', 'octagon'])
+    obstacle = ObstacleList(maxobs=10, content=[])
+    obstacle.readfromfile(toreadlist=['leftrectangle', 'rightrectangle', 'pentagon1'])
+    pass
+    # not finished yet
+
+    return

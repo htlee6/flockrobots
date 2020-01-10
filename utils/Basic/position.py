@@ -1,5 +1,5 @@
 import math
-
+import numpy as np
 
 class Position2D:
 
@@ -9,6 +9,9 @@ class Position2D:
     def __init__(self, x=0.0, y=0.0):
         self.x = x
         self.y = y
+
+    def __str__(self):
+        return '[%f, %f]' % (self.x, self.y)
 
     def positiondiff(self, pos: 'Position2D'):
         """
@@ -42,6 +45,9 @@ class Position3D(Position2D):
         self.y = y
         self.z = z
 
+    def __str__(self):
+        return '[%f, %f, %f]' % (self.x, self.y, self.z)
+
     def positiondiff(self, pos: 'Position3D'):
         """
 
@@ -63,3 +69,37 @@ class Position3D(Position2D):
             if type(i) is not float and type(i) is not int:
                 raise TypeError('Elements in the list should all be int or float type. ')
         return Position2D(x=float(l[0]), y=float(l[1]), z=float(l[2]))
+
+
+def ifpure(list2judge: list, typeexpected: type):
+    """
+
+    """
+    for i in list2judge:
+        if type(i) is not typeexpected:
+            return False
+    return True
+
+
+def centerofpositions(positions: list):
+    if ifpure(list2judge=positions, typeexpected=Position2D):
+        x_array = []
+        y_array = []
+        for i in positions:
+            x_array.append(i.x)
+            y_array.append(i.y)
+        return Position2D(np.average(x_array), np.average(y_array))
+    elif ifpure(list2judge=positions, typeexpected=Position3D):
+        x_array = []
+        y_array = []
+        z_array = []
+        for i in positions:
+            x_array.append(i.x)
+            y_array.append(i.y)
+            z_array.append(i.z)
+        return Position3D(np.average(x_array), np.average(y_array), np.average(z_array))
+    else:
+        raise ValueError('The parameter is not a list filled with either \'Position2D\' class or \'Position3D\' class. ')
+
+
+

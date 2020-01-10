@@ -52,7 +52,7 @@ def initialize(p_phasetimeline: phaselist.PhaseList,
     p_phasetimeline.data[0] = dynamicutil.initcondition(phasedata=p_phasetimeline.data[0], situparam=p_situparam)
 
     # TODO: finish initializephase() function
-    initializephase(actualphase, flockparam, situparam)
+    phase.initializephase(actualphase, flockparam, situparam)
 
     init_starttime = starttime + \
         round((5.0 + unitparam.communication.tdelay) / p_situparam.deltaT)
@@ -139,7 +139,7 @@ if __name__ == '__main__':
 
     '''Create a phase data instance'''
     # init a 'PhaseData' instance
-    phasenow = phase.PhaseData()
+    phasenow = phase.Phase()
 
     '''Create a wind parameter instance'''
     # init a 'WindParam' instance

@@ -8,7 +8,7 @@ class Velocity2D:
         self.vy = vy
 
     def __str__(self):
-        print('The 2D velocity vector is [%f, %f]. '% self.vx, self.vy)
+        return '{%f, %f}' % self.vx, self.vy
 
     def velocitydiff(self, vel: 'Velocity2D'):
         return Velocity2D(self.vx-vel.vx, self.vy-vel.vy)
@@ -28,7 +28,7 @@ class Velocity3D(Velocity2D):
         self.vz = velcotiy3dlist['vz1']'''
 
     def __str__(self):
-        print('The 3D velocity vector is [%f, %f, %f]. ' % self.vx, self.vy, self.vz)
+        return '{%f, %f, %f}' % self.vx, self.vy, self.vz
 
     def velocitydiff(self, vel: 'Velocity3D'):
         return Velocity3D(self.vx-vel.vx, self.vy-vel.vy, self.vz-vel.vz)

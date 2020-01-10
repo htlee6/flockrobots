@@ -1,4 +1,4 @@
-from utils.PhaseUtils.phase import PhaseData
+from utils.PhaseUtils.phase import Phase
 from utils.PhaseUtils.phaselist import PhaseList
 from utils.ParamUtils.situation import Position3D
 import utils.Basic.velocity as veloctiy
@@ -60,7 +60,7 @@ def randomphase(pl: PhaseList, initsize: Position3D, initcenter: Position3D,
 '''
 
 
-def initcondition(phasedata: PhaseData, situparam: situation.SituationParam):
+def initcondition(phasedata: Phase, situparam: situation.SituationParam):
     phasedata.randomphase(initsize=situparam.initpos,
                           initcenter=Position3D(x=0.0, y=0.0, z=0.0),
                           fromagentno=0, toagentno=phasedata.noagentsinphase(),
