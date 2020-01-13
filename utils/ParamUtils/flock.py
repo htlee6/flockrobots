@@ -15,13 +15,19 @@ class FlockParam:
     r0_shill: float
     slope_rep: float
     slope_frict: float
+    slope_shill: float
+    v_shill: float
+    acc_shill: float
     a_frict: float
     c_frict: float
-    arena: dict
+    arena_radius: float
+    arena_centerx: float
+    arena_centery: float
+    arena_shape: int
     dimofsimulation: int
 
-    def __init__(self, v_flock=0.0, v_rep=0.0, v_frict=0.0, v_max=0, r0=0.0, r0_offset_frict=0.0,
-                 r0_shill=0.0, slope_rep=0.0, slope_frict=0.0, a_frict=0.0, c_frict=0.0, arena={'centerx': 0, 'centery': 0, 'shape': 1}, dimofsimulation=2):
+    def __init__(self, v_flock=0.0, v_rep=0.0, v_frict=0.0, v_max=0, r0=0.0, r0_offset_frict=0.0, slope_shill=0.0, v_shill=0.0, acc_shill=0.0,
+                 r0_shill=0.0, slope_rep=0.0, slope_frict=0.0, a_frict=0.0, c_frict=0.0, arena_radius=0.0, arena_centerx=0.0, arena_centery=0.0, arena_shape=1, dimofsimulation=2):
         self.v_flock = v_flock
         self.v_rep = v_rep
         self.v_frict = v_frict
@@ -31,13 +37,23 @@ class FlockParam:
         self.r0_shill = r0_shill
         self.slope_rep = slope_rep
         self.slope_frict = slope_frict
+        self.slope_shill = slope_shill
+        self.v_shill = v_shill
+        self.acc_shill = acc_shill
         self.a_frict = a_frict
         self.c_frict = c_frict
-        if list(arena.keys()) == ['centerx', 'centery', 'shape']:
-            self.arena = arena
-        else:
-            raise KeyError(
-                'The keys of \'arena\' should me \'centerx\', \'centery\'&\'shape\', check again.')
+        self.arena_radius = arena_radius
+        self.arena_centerx = arena_centerx
+        self.arena_centery = arena_centery
+        self.arena_shape = arena_shape
+        # IGNORE THIS PART
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # if list(arena.keys()) == ['centerx', 'centery', 'shape']:
+        #    self.arena = arena
+        # else:
+        #    raise KeyError(
+        #        'The keys of \'arena\' should me \'centerx\', \'centery\'&\'shape\', check again.')
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         self.dimofsimulation = dimofsimulation
 
     def getdefault(self, filepath='default'):
@@ -58,8 +74,14 @@ class FlockParam:
             slope_frict=thejson['slope_frict'],
             a_frict=thejson['a_frict'],
             c_frict=thejson['c_frict'],
-            arena=thejson['arena'],
-            dimofsimulation=thejson['dimofsimulation'])
+            arena_radius=thejson['arena']['radius'],
+            arena_centerx=thejson['arena']['centerx'],
+            arena_centery=thejson['arena']['centery'],
+            arena_shape=thejson['arena']['shape'],
+            dimofsimulation=thejson['dimofsimulation'],
+            slope_shill=thejson['slope_shill'],
+            v_shill=thejson['v_shill'],
+            acc_shill=thejson['acc_shill'])
 
         return newflockparam
 

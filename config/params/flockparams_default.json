@@ -8,9 +8,13 @@
   "r0_shill": 0.0,
   "slope_rep": 0.4,
   "slope_frict": 0.4,
+  "slope_shill": 0.4,
+  "v_shill": 652.174,
+  "acc_shill": 250.0,
   "a_frict": 250.0,
   "c_frict": 0.23802,
   "arena": {
+    "radius": 23000.0,
     "centerx": 0.0,
     "centery": 0.0,
     "shape": 1

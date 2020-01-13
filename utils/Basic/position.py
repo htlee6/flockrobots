@@ -61,6 +61,11 @@ class Position3D(Position2D):
     def __sub__(self, tosubpos: 'Position3D'):
         return Position3D(self.x-tosubpos.x, self.y-tosubpos.y, self.z-tosubpos.z)
 
+    def reset(self):
+        self.x = 0
+        self.y = 0
+        self.z = 0
+
     def positiondiff(self, pos: 'Position3D'):
         """
 

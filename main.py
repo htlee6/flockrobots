@@ -4,18 +4,18 @@
 import datetime
 import sys
 
-import model.robotmodel as robotmodel
-import model.sensormodel as sensormodel
-import utils.ComputeUtils.playground as playground
+import model.robotmodel as robm
+import model.sensormodel as sensm
+import utils.ComputeUtils.playground as plg
 # Import self-built packages required
-import utils.ConfigUtils.outputfile as outputfile
-import utils.DynamicUtils.dynamicutil as dynamicutil
-import utils.ParamUtils.flock as flock
-import utils.ParamUtils.situation as situation
+import utils.ConfigUtils.outputfile as opfile
+import utils.DynamicUtils.dynamicutil as dyut
+import utils.ParamUtils.flock as flk
+import utils.ParamUtils.situation as situ
 import utils.ParamUtils.unit as unit
 import utils.ParamUtils.wind as wind
 import utils.PhaseUtils.phase as phase
-import utils.PhaseUtils.phaselist as phaselist
+import utils.PhaseUtils.phaselist as phasel
 import utils.StatsticUtils.stat as stat
 from utils.Basic.velocity import Velocity3D
 from utils.ConfigUtils.outputfile import SaveMode
@@ -41,26 +41,27 @@ def print_help():
           )
 
 
-def initialize(p_phasetimeline: phaselist.PhaseList,
-               p_situparam: situation.SituationParam,
+def initialize(p_phasetimeline: phasel.PhaseList,
+               p_situparam: situ.SituationParam,
                p_flockparam: FlockParam,
                p_statutil: StatUtil,
                starttime: int):
 
     p_flockparam.refresh()
 
-    p_phasetimeline.data[0] = dynamicutil.initcondition(phasedata=p_phasetimeline.data[0], situparam=p_situparam)
+    p_phasetimeline.data[0] = dyut.initcondition(phasedata=p_phasetimeline.data[0], situparam=p_situparam)
 
-    # TODO: finish initializephase() function
-    phase.initializephase(actualphase, flockparam, situparam)
+    # initializephase() function - Finished on 13/01/2020
+    p_phasetimeline[0], res_arenas, res_obstacles = phase.initializephase(phase=p_phasetimeline[0], flockparam=p_flockparam, situparam=p_situparam)
 
     init_starttime = starttime + \
         round((5.0 + unitparam.communication.tdelay) / p_situparam.deltaT)
     p_phasetimeline.wait(time2wait=(5 + unitparam.communication.tdelay), h=p_situparam.deltaT)
+    timebeforeflock = 10.0 + p_
 
     # Match the steady state timestamps in the 2 corresponding structures.
     p_statutil.startofsteadystate = p_situparam.startofsteadystate
-    return p_phasetimeline, p_situparam, p_flockparam, p_statutil, init_starttime
+    return p_phasetimeline, p_situparam, p_flockparam, p_statutil, init_starttime, res_arenas, res_obstacles
 
 
 if __name__ == '__main__':
@@ -94,10 +95,10 @@ if __name__ == '__main__':
         # file
 
         # Output filename
-        OutputPath = outputfile.getconfig()
+        OutputPath = opfile.getconfig()
 
-    OutputPath = outputfile.getconfig(item='OutputDirectory') + '/' + \
-        datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + OutputPath + '.csv'
+    OutputPath = opfile.getconfig(item='OutputDirectory') + '/' + \
+                 datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + OutputPath + '.csv'
 
     # Check optional flag '-i', which defines the input file for situation
     # params
@@ -110,7 +111,7 @@ if __name__ == '__main__':
         SituationConfigPath = 'default'
 
     '''Create a situation parameter instance'''
-    situparam = situation.SituationParam(agentnumber=200)
+    situparam = situ.SituationParam(agentnumber=200)
     # agentnumber = 200 for test
     situparam = situparam.getdefault(filepath=SituationConfigPath)
 
@@ -127,7 +128,7 @@ if __name__ == '__main__':
     if FlockConfigPath == '':
         FlockConfigPath = 'default'
 
-    flockparam = flock.FlockParam()
+    flockparam = flk.FlockParam()
     flockparam = flockparam.getdefault(filepath=FlockConfigPath)
 
     # adjust each parameter in 'flockparam' instance
@@ -152,20 +153,20 @@ if __name__ == '__main__':
     timestep2store = int((stored_time / situparam.deltaT) - 1)
 
     phasedata, flockparam, situparam, unitparam, windparam = \
-        robotmodel.initpreferredvelocity(phasedata=phasenow,
-                                         flockparam=flockparam,
-                                         situparam=situparam,
-                                         unitparam=unitparam,
-                                         windparam=windparam)
+        robm.initpreferredvelocity(phasedata=phasenow,
+                                   flockparam=flockparam,
+                                   situparam=situparam,
+                                   unitparam=unitparam,
+                                   windparam=windparam)
 
-    noises = sensormodel.initnoise(situparam.agentnumber)
+    noises = sensm.initnoise(situparam.agentnumber)
     agentsindanger = [False] * situparam.agentnumber
 
     statutil = stat.StatUtil()
     statutil.elapsedtime = now * situparam.deltaT - \
         5.0 - unitparam.communication.tdelay
 
-    phasetimeline = phaselist.PhaseList(timestep=timestep2store)
+    phasetimeline = phasel.PhaseList(timestep=timestep2store)
 
     # Prepare everything before starting... Are you ready?
     phasetimeline, situparam, flockparam, statutil, now \
@@ -184,13 +185,13 @@ if __name__ == '__main__':
 
     statutil.reset()
 
-    outputmode = outputfile.OutputMode()
+    outputmode = opfile.OutputMode()
 
     #
     statutil.savemode = outputmode.savemodelspecifics
 
     # Create a lot of files to store the simulation data
-    currentdir = outputfile.createdatastorefiles(outputmode, symbol=datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
+    currentdir = opfile.createdatastorefiles(outputmode, symbol=datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
 
     # Imagine 'accelerations' as a numberofagents*3 matrix (3 dims, x, y, z)
     for i in range(situparam.agentnumber - 1):
@@ -200,7 +201,7 @@ if __name__ == '__main__':
         statutil.initmodelspecificstatus(currentdirectory=currentdir)
     flockparam.refresh()
 
-    pg = playground.Playground(
+    pg = plg.Playground(
         situparam=situparam,
         flockparam=flockparam,
         windparam=windparam,
@@ -213,6 +214,6 @@ if __name__ == '__main__':
           "The result will be written into '" + OutputPath + "'")
 
     # Create the output file & Write the result into file
-    outputfile.generatefile(filepath=OutputPath)
+    opfile.generatefile(filepath=OutputPath)
 
     pass

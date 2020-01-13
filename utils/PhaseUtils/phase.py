@@ -25,10 +25,15 @@ class Phase:
         # TODO: need to read from configuration files
         # self.innerstates = [InnerState2D() for i in range(5)]
         self.agents = [Agent(idx=i) for i in range(10)]
-        return self
 
     def getagentcoordinates(self, agentno: int):
         return self.agents[agentno].coordinate
+
+    def editagentcoordinate(self, coord: Position3D, agentidx: int):
+        self.agents[agentidx].coordinate = coord
+
+    def editagentvelocity(self, velo: Velocity3D, agentidx: int):
+        self.agents[agentidx].velocity = velo
 
     def random(self, fromno: int, tono: int):
         for i in range(fromno, tono):
@@ -90,7 +95,8 @@ class Phase:
 
                 stepcount = stepcount + 1
                 if stepcount > maxstep:
-                    raise TimeoutError('Stepcount bigger than maxstep, please check! ')
+                    raise TimeoutError(
+                        'Stepcount bigger than maxstep, please check! ')
 
             self.agents[i].velocity = Velocity3D()
             self.agents[i].coordinate = randpos
@@ -102,32 +108,66 @@ class Phase:
     def noinnerstatesinphase(self):
         return self.agents[0].innerstatenumber
 
-    def placeagentsonXYplane(self, xsize: float, ysize: float, xcenter: float, ycenter: float, zcenter: float, fromagentno: int, toagentno: int, radius: float):
+    def placeagentsonXYplane(self, xsize: float, ysize: float, xcenter: float,
+                             ycenter: float, zcenter: float, fromagentno: int, toagentno: int, radius: float):
         arrangementcorrect = False
         stepcount = 0
         maxstep = 100 * self.noagentsinphase()
         for i in range(fromagentno, toagentno):
             while arrangementcorrect is False:
                 arrangementcorrect = True
-                agentcoordinate = Position3D(x=xcenter+random.uniform(-xsize/2, xsize/2),
-                                             y=ycenter+random.uniform(-ysize/2, ysize/2),
+                agentcoordinate = Position3D(x=xcenter + random.uniform(-xsize / 2, xsize / 2),
+                                             y=ycenter +
+                                             random.uniform(-ysize / 2,
+                                                            ysize / 2),
                                              z=zcenter)
             for j in range(self.noagentsinphase()):
                 if i == j:
                     j = toagentno - 1
                     continue
-                tmpcoordinate = self.agents[j].coordinate
-                
+                tmpcoordinate = self.getagentcoordinates(agentno=j)
+                diff = tmpcoordinate - agentcoordinate
+
+                if diff.length() <= radius:
+                    arrangementcorrect = False
+
+            self.editagentcoordinate(coord=agentcoordinate, agentidx=i)
+            self.editagentvelocity(velo=Velocity3D(0.0, 0.0, 0.0), agentidx=i)
+            arrangementcorrect = False
 
 
-def initializephase(phase: Phase, flockparam: FlockParam, situparam: SituationParam):
+def initializephase(phase: Phase, flockparam: FlockParam,
+                    situparam: SituationParam):
     # finished part
     arenas = ArenaList(maxarenacount=10, content=[])
-    arenas.readfromfile(toreadlist=['triangle', 'pentagon1', 'pentagon2', 'octagon'])
+    arenas.readfromfile(
+        toreadlist=[
+            'triangle',
+            'pentagon1',
+            'pentagon2',
+            'octagon'])
     obstacles = ObstacleList(maxobs=10, content=[])
-    obstacles.readfromfile(toreadlist=['leftrectangle', 'rightrectangle', 'pentagon1'])
-    phase.randomphase()
+    obstacles.readfromfile(
+        toreadlist=[
+            'leftrectangle',
+            'rightrectangle',
+            'pentagon1'])
+    phase.placeagentsonXYplane(
+        xsize=2 * flockparam.arena_radius,
+        ysize=2 * flockparam.arena_radius,
+        xcenter=flockparam.arena_centerx,
+        ycenter=flockparam.arena_centery,
+        zcenter=0,
+        fromagentno=0,
+        toagentno=phase.noagentsinphase(),
+        radius=max(
+            situparam.dangerousradius,
+            flockparam.v_flock * 2))
+    if flockparam.dimofsimulation == 2:
+        for m in range(phase.noagentsinphase()):
+            phase.agents[m].coordinate.z = 0.0
+            phase.agents[m].veloctiy.vz = 0.0
     pass
     # TODO not finished yet
 
-    return
+    return phase, arenas, obstacles
