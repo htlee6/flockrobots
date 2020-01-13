@@ -21,6 +21,7 @@ from utils.Basic.velocity import Velocity3D
 from utils.ConfigUtils.outputfile import SaveMode
 from utils.ParamUtils.flock import FlockParam
 from utils.StatsticUtils.stat import StatUtil
+from utils.ParamUtils.unit import UnitParam
 
 # Functions definition, only used in main.py
 pass
@@ -45,23 +46,44 @@ def initialize(p_phasetimeline: phasel.PhaseList,
                p_situparam: situ.SituationParam,
                p_flockparam: FlockParam,
                p_statutil: StatUtil,
-               starttime: int):
+               p_unitparam: UnitParam,
+               p_starttime: int):
+    """
 
+    Args:
+        p_phasetimeline: the PhaseTimeLine to use and to store
+        p_situparam: the SituationParam to use, involved with computing
+        p_flockparam:
+        p_statutil:
+        p_unitparam:
+        p_starttime:
+
+    Returns: A lot of initialized computational parameters and controlling parameters.
+
+    """
     p_flockparam.refresh()
 
-    p_phasetimeline.data[0] = dyut.initcondition(phasedata=p_phasetimeline.data[0], situparam=p_situparam)
+    p_phasetimeline.data[0] = dyut.initcondition(
+        phasedata=p_phasetimeline.data[0], situparam=p_situparam)
 
     # initializephase() function - Finished on 13/01/2020
-    p_phasetimeline[0], res_arenas, res_obstacles = phase.initializephase(phase=p_phasetimeline[0], flockparam=p_flockparam, situparam=p_situparam)
+    p_phasetimeline[0], res_arenas, res_obstacles = phase.initializephase(phase=p_phasetimeline[0],
+                                                                          flockparam=p_flockparam,
+                                                                          situparam=p_situparam)
 
-    init_starttime = starttime + \
+    init_starttime = p_starttime + \
         round((5.0 + unitparam.communication.tdelay) / p_situparam.deltaT)
-    p_phasetimeline.wait(time2wait=(5 + unitparam.communication.tdelay), h=p_situparam.deltaT)
-    timebeforeflock = 10.0 + p_
+    p_phasetimeline.wait(
+        time2wait=(
+            5 + unitparam.communication.tdelay),
+        h=p_situparam.deltaT)
+    res_timebeforeflock = 10.0 + p_unitparam.communication.tdelay
 
     # Match the steady state timestamps in the 2 corresponding structures.
     p_statutil.startofsteadystate = p_situparam.startofsteadystate
-    return p_phasetimeline, p_situparam, p_flockparam, p_statutil, init_starttime, res_arenas, res_obstacles
+
+    return p_phasetimeline, p_situparam, p_flockparam, \
+        p_statutil, init_starttime, res_arenas, res_obstacles, res_timebeforeflock
 
 
 if __name__ == '__main__':
@@ -88,7 +110,8 @@ if __name__ == '__main__':
             print('More than 1 agent/flock param files. Check twice! ')
             sys.exit(0)
 
-    OutputPath = input('1. Set output file path (Press Enter to use the default): ')
+    OutputPath = input(
+        '1. Set output file path (Press Enter to use the default): ')
     if OutputPath == '':
         # aka input nothing/pressed Enter,
         # so we will use the default settings reading from the output config
@@ -98,7 +121,7 @@ if __name__ == '__main__':
         OutputPath = opfile.getconfig()
 
     OutputPath = opfile.getconfig(item='OutputDirectory') + '/' + \
-                 datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + OutputPath + '.csv'
+        datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + OutputPath + '.csv'
 
     # Check optional flag '-i', which defines the input file for situation
     # params
@@ -124,7 +147,8 @@ if __name__ == '__main__':
 
     '''Create a flock parameter instance'''
     # define flock param config file
-    FlockConfigPath = input("3. Set flock config file path (Press Enter to use the default): ")
+    FlockConfigPath = input(
+        "3. Set flock config file path (Press Enter to use the default): ")
     if FlockConfigPath == '':
         FlockConfigPath = 'default'
 
@@ -169,15 +193,17 @@ if __name__ == '__main__':
     phasetimeline = phasel.PhaseList(timestep=timestep2store)
 
     # Prepare everything before starting... Are you ready?
-    phasetimeline, situparam, flockparam, statutil, now \
+    phasetimeline, situparam, flockparam, statutil, now, arenas, obstacles, timebeforeflock \
         = initialize(p_phasetimeline=phasetimeline, p_situparam=situparam,
-                     p_flockparam=flockparam, p_statutil=statutil, starttime=int(now))
+                     p_flockparam=flockparam, p_statutil=statutil, p_unitparam=unitparam, p_starttime=int(now))
 
     # Info to be printed...
     # agent number
     print('Simulation started with', situparam.agentnumber, 'agent(s). ')
     # size of area
-    print('Sizes of the starting area: '+str(situparam.initpos.x)+'cm * '+str(situparam.initpos.y) +'cm * '+str(situparam.initpos.z)+'cm')
+    print(
+        'Sizes of the starting area: ' + str(situparam.initpos.x) + 'cm * ' + str(situparam.initpos.y) + 'cm * ' + str(
+            situparam.initpos.z) + 'cm')
 
     # The real challenge starts!
     statutil.elapsedtime = (now * situparam.deltaT) - \
@@ -191,7 +217,8 @@ if __name__ == '__main__':
     statutil.savemode = outputmode.savemodelspecifics
 
     # Create a lot of files to store the simulation data
-    currentdir = opfile.createdatastorefiles(outputmode, symbol=datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
+    currentdir = opfile.createdatastorefiles(
+        outputmode, symbol=datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
 
     # Imagine 'accelerations' as a numberofagents*3 matrix (3 dims, x, y, z)
     for i in range(situparam.agentnumber - 1):
