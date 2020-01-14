@@ -12,14 +12,16 @@ class Agent:
     unitparam: UnitParam
     innerstatenumber: int
     innerstate: list
+    noise: bool
 
-    def __init__(self, idx, velocity=Velocity3D(), coordinate=Position3D(), agentparam=UnitParam(), noinnerstate=0):
+    def __init__(self, idx, velocity=Velocity3D(), coordinate=Position3D(), agentparam=UnitParam(), noinnerstate=0, noise=False):
         self.index = idx
         self.velocity = velocity
         self.coordinate = coordinate
         self.unitparam = agentparam
         self.innerstatenumber = noinnerstate
         self.innerstate = [0.0 for i in range(noinnerstate)]
+        self.noise = noise
 
     def getdefault(self):
         self.unitparam = self.unitparam.getdefault()

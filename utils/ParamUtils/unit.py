@@ -1,7 +1,6 @@
 import json
 
 
-
 class UnitParamBasic:
 
     def __init__(self, name, unit, value):
@@ -107,6 +106,15 @@ class UnitParam:
         pass
 
     def getdefault(self, filepath='config/params/unitparams_default.json'):
+        """
+        Get default unit parameter configurations.
+        Args:
+            filepath: Unit parameter configuration file path.
+
+        Returns:
+            self: A modified self, with every member variable initialized.
+
+        """
         with open(filepath) as f_unitparam:
             unitparamjson = json.load(f_unitparam)
             # PID parameters

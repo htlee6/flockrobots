@@ -1,5 +1,5 @@
 {
-  "AgentNumber": 100,
+  "AgentNumber": 5,
   "SimulationLength": 600.0,
   "InitPosition": {
     "initX": 25000.0,

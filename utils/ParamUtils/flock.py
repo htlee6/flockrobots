@@ -65,7 +65,7 @@ class FlockParam:
         newflockparam = FlockParam(
             v_flock=thejson['v_flock'],
             v_rep=thejson['v_rep'],
-            v_frict=['v_frict'],
+            v_frict=thejson['v_frict'],
             v_max=thejson['v_max'],
             r0=thejson['r0'],
             r0_offset_frict=thejson['r0_offset_frict'],

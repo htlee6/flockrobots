@@ -8,6 +8,8 @@ from utils.ParamUtils.situation import SituationParam
 from utils.ParamUtils.arena import Arena, ArenaList
 from utils.ParamUtils.obstacle import Obstacle, ObstacleList
 
+import json
+
 
 class Phase:
 
@@ -24,15 +26,22 @@ class Phase:
     def getdefault(self):
         # TODO: need to read from configuration files
         # self.innerstates = [InnerState2D() for i in range(5)]
-        self.agents = [Agent(idx=i).getdefault() for i in range(10)]
+        # TODO I think there will be an improved design of obtaining the required value instead of reading from files.
+        with open('config/params/situationparams_default.json') as f_here:
+            thejson = json.load(f_here)
+            agentno = thejson['AgentNumber']
+        self.agents = [Agent(idx=i).getdefault() for i in range(agentno)]
 
         return self
 
     def getagentcoordinates(self, agentno: int):
         return self.agents[agentno].coordinate
 
-    def editagentcoordinate(self, coord: Position3D, agentidx: int):
+    def editagentcoordinate(self, agentidx: int, coord: Position3D):
         self.agents[agentidx].coordinate = coord
+
+    def editnoiseeffective(self, agentidx: int, noise: bool):
+        self.agents[agentidx].noise = noise
 
     def editagentvelocity(self, velo: Velocity3D, agentidx: int):
         self.agents[agentidx].velocity = velo
@@ -48,13 +57,17 @@ class Phase:
     def randomphase(self, initsize: Position3D, initcenter: Position3D,
                     fromagentno: int, toagentno: int, radius: float):
         """
+        Notes:
+            The affected range is [fromagentno, toagentno); adjust the parameter values as you need.
+        Args:
+            initsize:
+            initcenter:
+            fromagentno: the LIST index of the starting agent. (The first agent has an index of 0 )
+            toagentno: the LIST index of the finishing agent. (The last agent has an idnex of (numberofagents - 1) )
+            radius:
 
-        :param initsize:
-        :param initcenter:
-        :param fromagentno:
-        :param toagentno:
-        :param radius:
-        :return:
+        Returns:
+
         """
         # variables
 
@@ -65,9 +78,9 @@ class Phase:
         #
         stepcount = 0
 
-        self.random(fromno=fromagentno, tono=toagentno + 1)
+        self.random(fromno=fromagentno, tono=toagentno)
 
-        for i in range(fromagentno, toagentno + 1):
+        for i in range(fromagentno, toagentno):
             while not arrangementcorrect:
                 arrangementcorrect = True
                 random.seed()
@@ -168,7 +181,7 @@ def initializephase(phase: Phase, flockparam: FlockParam,
     if flockparam.dimofsimulation == 2:
         for m in range(phase.noagentsinphase()):
             phase.agents[m].coordinate.z = 0.0
-            phase.agents[m].veloctiy.vz = 0.0
+            phase.agents[m].velocity.vz = 0.0
     pass
     # TODO not finished yet
 

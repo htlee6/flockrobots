@@ -18,6 +18,20 @@ class PhaseList:
     def __len__(self):
         return self.timestep
 
+    def __getitem__(self, index: int):
+        """
+
+        Args:
+            index:
+
+        Returns:
+
+        """
+        return self.data[index]
+
+    def __setitem__(self, key, value: Phase):
+        pass
+
     def randomphaselist(self):
         pass
 
@@ -29,9 +43,11 @@ class PhaseList:
         for i in range(1, int((1 + time2wait) / h)):
             for j in range(self.data[0].noagentsinphase()):
 
-                self.data[i].agents[j].coordinate = self.data[i-1].agents[j].coordinate
-                self.data[i].agents[j].velocity = Velocity3D(vx=0.0, vy=0.0, vz=0.0)
+                self[i].agents[j].coordinate = self.data[i-1].agents[j].coordinate
+                self[i].agents[j].velocity = Velocity3D(vx=0.0, vy=0.0, vz=0.0)
 
                 for k in range(self.data[0].noinnerstatesinphase()):
                     self.data[i].agents[j].innerstate[k] = self.data[i-1].agents[j].innerstate[k]
+
+
 

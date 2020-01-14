@@ -17,7 +17,7 @@ class Obstacle:
 
         self.name = name
         self.maxvertex = maxv
-        self.center = position.centerofpositions(position=vcoords)
+        self.center = position.centerofpositions(positions=vcoords)
         if len(vcoords) <= self.maxvertex:
             self.vertex = len(vcoords)
             self.vertexcoordinates = vcoords

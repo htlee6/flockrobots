@@ -67,15 +67,15 @@ def initialize(p_phasetimeline: phasel.PhaseList,
         phase=p_phasetimeline.data[0], situparam=p_situparam)
 
     # initializephase() function - Finished on 13/01/2020
-    p_phasetimeline[0], res_arenas, res_obstacles = phase.initializephase(phase=p_phasetimeline[0],
-                                                                          flockparam=p_flockparam,
-                                                                          situparam=p_situparam)
+    p_phasetimeline.data[0], res_arenas, res_obstacles = phase.initializephase(phase=p_phasetimeline.data[0],
+                                                                               flockparam=p_flockparam,
+                                                                               situparam=p_situparam)
 
     init_starttime = p_starttime + \
-        round((5.0 + unitparam.communication.tdelay) / p_situparam.deltaT)
+                     round((5.0 + unitparam.communication.tdelay) / p_situparam.deltaT)
     p_phasetimeline.wait(
         time2wait=(
-            5 + unitparam.communication.tdelay),
+                5 + unitparam.communication.tdelay),
         h=p_situparam.deltaT)
     res_timebeforeflock = 10.0 + p_unitparam.communication.tdelay
 
@@ -83,7 +83,7 @@ def initialize(p_phasetimeline: phasel.PhaseList,
     p_statutil.startofsteadystate = p_situparam.startofsteadystate
 
     return p_phasetimeline, p_situparam, p_flockparam, \
-        p_statutil, init_starttime, res_arenas, res_obstacles, res_timebeforeflock
+           p_statutil, init_starttime, res_arenas, res_obstacles, res_timebeforeflock
 
 
 if __name__ == '__main__':
@@ -121,7 +121,7 @@ if __name__ == '__main__':
         OutputPath = opfile.getconfig()
 
     OutputPath = opfile.getconfig(item='OutputDirectory') + '/' + \
-        datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + OutputPath + '.csv'
+                 datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + OutputPath + '.csv'
 
     # Check optional flag '-i', which defines the input file for situation
     # params
@@ -177,18 +177,19 @@ if __name__ == '__main__':
     timestep2store = int((stored_time / situparam.deltaT) - 1)
 
     phasedata, flockparam, situparam, unitparam, windparam = \
-        robm.initpreferredvelocity(phasedata=phasenow,
-                                   flockparam=flockparam,
-                                   situparam=situparam,
-                                   unitparam=unitparam,
-                                   windparam=windparam)
+        robm.initpreferredvelocity(p_phase=phasenow,
+                                   p_flockparam=flockparam,
+                                   p_situparam=situparam,
+                                   p_unitparam=unitparam,
+                                   p_windparam=windparam)
 
-    noises = sensm.initnoise(situparam.agentnumber)
+    # noise is a bool type member variable stored in the Agent object.
+    # noises = sensm.initnoise(situparam.agentnumber)
     agentsindanger = [False] * situparam.agentnumber
 
     statutil = stat.StatUtil()
     statutil.elapsedtime = now * situparam.deltaT - \
-        5.0 - unitparam.communication.tdelay
+                           5.0 - unitparam.communication.tdelay
 
     phasetimeline = phasel.PhaseList(timestep=timestep2store)
 
@@ -207,7 +208,7 @@ if __name__ == '__main__':
 
     # The real challenge starts!
     statutil.elapsedtime = (now * situparam.deltaT) - \
-        5.0 - unitparam.communication.tdelay
+                           5.0 - unitparam.communication.tdelay
 
     statutil.reset()
 
