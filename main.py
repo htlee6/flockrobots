@@ -64,7 +64,7 @@ def initialize(p_phasetimeline: phasel.PhaseList,
     p_flockparam.refresh()
 
     p_phasetimeline.data[0] = dyut.initcondition(
-        phasedata=p_phasetimeline.data[0], situparam=p_situparam)
+        phase=p_phasetimeline.data[0], situparam=p_situparam)
 
     # initializephase() function - Finished on 13/01/2020
     p_phasetimeline[0], res_arenas, res_obstacles = phase.initializephase(phase=p_phasetimeline[0],

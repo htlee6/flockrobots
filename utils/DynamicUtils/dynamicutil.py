@@ -60,13 +60,13 @@ def randomphase(pl: PhaseList, initsize: Position3D, initcenter: Position3D,
 '''
 
 
-def initcondition(phasedata: Phase, situparam: situation.SituationParam):
-    phasedata.randomphase(initsize=situparam.initpos,
-                          initcenter=Position3D(x=0.0, y=0.0, z=0.0),
-                          fromagentno=0, toagentno=phasedata.noagentsinphase(),
-                          radius=situparam.dangerousradius)
+def initcondition(phase: Phase, situparam: situation.SituationParam):
+    phase.randomphase(initsize=situparam.initpos,
+                      initcenter=Position3D(x=0.0, y=0.0, z=0.0),
+                      fromagentno=0, toagentno=phase.noagentsinphase(),
+                      radius=situparam.dangerousradius)
 
-    return phasedata
+    return phase
     pass
 
 

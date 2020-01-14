@@ -24,7 +24,9 @@ class Phase:
     def getdefault(self):
         # TODO: need to read from configuration files
         # self.innerstates = [InnerState2D() for i in range(5)]
-        self.agents = [Agent(idx=i) for i in range(10)]
+        self.agents = [Agent(idx=i).getdefault() for i in range(10)]
+
+        return self
 
     def getagentcoordinates(self, agentno: int):
         return self.agents[agentno].coordinate

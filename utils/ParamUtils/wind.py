@@ -1,7 +1,7 @@
-class WindParam:
+from utils.Basic.velocity import Velocity2D
 
-    vx: float
-    vy: float
+
+class WindParam(Velocity2D):
 
     # TODO: why the wind has only a 2-dimensional velocity? What about 3D?
 

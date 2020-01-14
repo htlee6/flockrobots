@@ -1,3 +1,7 @@
+import json
+
+
+
 class UnitParamBasic:
 
     def __init__(self, name, unit, value):
@@ -102,6 +106,35 @@ class UnitParam:
         self.pkgloss = pkgloss
         pass
 
+    def getdefault(self, filepath='config/params/unitparams_default.json'):
+        with open(filepath) as f_unitparam:
+            unitparamjson = json.load(f_unitparam)
+            # PID parameters
+            self.PID.taux = unitparamjson['PID']['taux']
+            self.PID.tauy = unitparamjson['PID']['tauy']
+            self.PID.tauz = unitparamjson['PID']['tauz']
+            # Max acceleration
+            self.amax = unitparamjson['amax']
+            # Communication parameters
+            self.communication.rc = unitparamjson['communication']['rc']
+            self.communication.tdelay = unitparamjson['communication']['tdelay']
+            # GPS parameters
+            self.GPS.tGPS = unitparamjson['GPS']['tGPS']
+            self.GPS.sigmax = unitparamjson['GPS']['sigmax']
+            self.GPS.sigmay = unitparamjson['GPS']['sigmay']
+            self.GPS.sigmaz = unitparamjson['GPS']['sigmaz']
+            # External noise parameters
+            self.extnoise.sigmax = unitparamjson['externalnoise']['sigmax']
+            self.extnoise.sigmay = unitparamjson['externalnoise']['sigmay']
+            self.extnoise.sigmaz = unitparamjson['externalnoise']['sigmaz']
+            # Wind velocity and etc. parameters
+            self.wind.avg = unitparamjson['wind']['avg']
+            self.wind.stdev = unitparamjson['wind']['stdev']
+            self.wind.angle = unitparamjson['wind']['angle']
+            # Package loss parameters
+            self.pkgloss.distance = unitparamjson['packageloss']['distance']
+            self.pkgloss.ratio = unitparamjson['packageloss']['ratio']
 
+        return self
 
 

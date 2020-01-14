@@ -9,7 +9,7 @@ class PhaseList:
 
     def __init__(self, timestep: int, **phaseinitparam):
         self.timestep = timestep
-        if not phaseinitparam:
+        if len(phaseinitparam) == 0:
             self.data = [Phase().getdefault() for i in range(timestep)]
         else:
             self.data = [Phase(phaseinitparam['innerstatenumber'], phaseinitparam['agentnumber']) for i in
