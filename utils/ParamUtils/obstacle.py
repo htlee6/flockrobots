@@ -24,6 +24,9 @@ class Obstacle:
         else:
             raise ValueError('vertex can\'t be more than it\'s maximum limitation. ')
 
+    def __str__(self):
+        return  self.name + self.vertex + 'verticies:' + self.vertexcoordinates
+
 
 class ObstacleList:
     """
@@ -60,4 +63,7 @@ class ObstacleList:
                     poslist.append(p.readfromlist(j))
                 obstacle_tmp = Obstacle(name=i, maxv=10, vcoords=poslist)
                 self.appendobstacle(obstacle_tmp)
+
+    def __str__(self):
+        return self.numofobstacle + 'obstacles in the list. '
 

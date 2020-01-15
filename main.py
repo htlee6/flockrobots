@@ -23,11 +23,33 @@ from utils.ParamUtils.flock import FlockParam
 from utils.StatsticUtils.stat import StatUtil
 from utils.ParamUtils.unit import UnitParam
 
-# Functions definition, only used in main.py
-pass
+# Functions definition, used in main.py only
+
+
+def pathinput(hint: str, default_return: str):
+    """
+    A simple path controlling function for easier file path input.
+
+    Args:
+        hint: Hint when inputting.
+        default_return: When input is nothing (or pressed Enter when inputting), the default result str to be returned.
+
+    Returns: The expected file path, as a str type.
+
+    """
+    tmp_input = input(hint)
+    if tmp_input is '':
+        return default_return
+    else:
+        return tmp_input
 
 
 def print_help():
+    """
+
+    Help information to be printed.
+
+    """
     print("This is robotsim created at ELTE Department of Biological Physics.\n"
           "\n"
           "Command line options:\n"
@@ -72,10 +94,9 @@ def initialize(p_phasetimeline: phasel.PhaseList,
                                                                                situparam=p_situparam)
 
     init_starttime = p_starttime + \
-                     round((5.0 + unitparam.communication.tdelay) / p_situparam.deltaT)
+        round((5.0 + unitparam.communication.tdelay) / p_situparam.deltaT)
     p_phasetimeline.wait(
-        time2wait=(
-                5 + unitparam.communication.tdelay),
+        time2wait=(5 + unitparam.communication.tdelay),
         h=p_situparam.deltaT)
     res_timebeforeflock = 10.0 + p_unitparam.communication.tdelay
 
@@ -83,7 +104,7 @@ def initialize(p_phasetimeline: phasel.PhaseList,
     p_statutil.startofsteadystate = p_situparam.startofsteadystate
 
     return p_phasetimeline, p_situparam, p_flockparam, \
-           p_statutil, init_starttime, res_arenas, res_obstacles, res_timebeforeflock
+        p_statutil, init_starttime, res_arenas, res_obstacles, res_timebeforeflock
 
 
 if __name__ == '__main__':
@@ -110,28 +131,17 @@ if __name__ == '__main__':
             print('More than 1 agent/flock param files. Check twice! ')
             sys.exit(0)
 
-    OutputPath = input(
-        '1. Set output file path (Press Enter to use the default): ')
-    if OutputPath == '':
-        # aka input nothing/pressed Enter,
-        # so we will use the default settings reading from the output config
-        # file
-
-        # Output filename
-        OutputPath = opfile.getconfig()
+    OutputPath = pathinput(hint='1. Set output file path (Press Enter to use the default): ',
+                           default_return=opfile.getconfig())
 
     OutputPath = opfile.getconfig(item='OutputDirectory') + '/' + \
-                 datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + OutputPath + '.csv'
+        datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + '_' + OutputPath + '.csv'
 
     # Check optional flag '-i', which defines the input file for situation
     # params
-    SituationConfigPath = input(
-        '2. Set situation config file path (Press Enter to use the default): ')
-    if SituationConfigPath == '':
-        # like 'OutputPath', the same we process 'InputPath'
-
-        # Input file path
-        SituationConfigPath = 'default'
+    SituationConfigPath = pathinput(
+        hint='2. Set situation config file path (Press Enter to use the default): ',
+        default_return='default')
 
     '''Create a situation parameter instance'''
     situparam = situ.SituationParam(agentnumber=200)
@@ -147,10 +157,9 @@ if __name__ == '__main__':
 
     '''Create a flock parameter instance'''
     # define flock param config file
-    FlockConfigPath = input(
-        "3. Set flock config file path (Press Enter to use the default): ")
-    if FlockConfigPath == '':
-        FlockConfigPath = 'default'
+    FlockConfigPath = pathinput(
+        hint="3. Set flock config file path (Press Enter to use the default): ",
+        default_return='default')
 
     flockparam = flk.FlockParam()
     flockparam = flockparam.getdefault(filepath=FlockConfigPath)
@@ -159,14 +168,12 @@ if __name__ == '__main__':
     flockparam.applyrange()
     # flockparam = flockparam.applyrange()
 
-    '''Create a unit parameter instance'''
+    # init a 'UnitParam' instance
     unitparam = unit.UnitParam()
 
-    '''Create a phase data instance'''
     # init a 'PhaseData' instance
-    phasenow = phase.Phase()
+    phasenow = phase.Phase().getdefault()
 
-    '''Create a wind parameter instance'''
     # init a 'WindParam' instance
     windparam = wind.WindParam(vx=1.0, vy=2.0)
 
@@ -176,39 +183,36 @@ if __name__ == '__main__':
     # Compute 'timestep2store'
     timestep2store = int((stored_time / situparam.deltaT) - 1)
 
-    phasedata, flockparam, situparam, unitparam, windparam = \
-        robm.initpreferredvelocity(p_phase=phasenow,
-                                   p_flockparam=flockparam,
-                                   p_situparam=situparam,
-                                   p_unitparam=unitparam,
-                                   p_windparam=windparam)
+    phasenow, preferredvelocity = robm.initpreferredvelocity(
+        p_phase=phasenow, p_situparam=situparam)
 
     # noise is a bool type member variable stored in the Agent object.
     # noises = sensm.initnoise(situparam.agentnumber)
     agentsindanger = [False] * situparam.agentnumber
 
-    statutil = stat.StatUtil()
-    statutil.elapsedtime = now * situparam.deltaT - \
-                           5.0 - unitparam.communication.tdelay
-
     phasetimeline = phasel.PhaseList(timestep=timestep2store)
+
+    statutil = stat.StatUtil()
 
     # Prepare everything before starting... Are you ready?
     phasetimeline, situparam, flockparam, statutil, now, arenas, obstacles, timebeforeflock \
         = initialize(p_phasetimeline=phasetimeline, p_situparam=situparam,
                      p_flockparam=flockparam, p_statutil=statutil, p_unitparam=unitparam, p_starttime=int(now))
 
-    # Info to be printed...
+    statutil.elapsedtime = now * situparam.deltaT - \
+        5.0 - unitparam.communication.tdelay
+
+    # Log printing
     # agent number
-    print('Simulation started with', situparam.agentnumber, 'agent(s). ')
+    print('[' + datetime.datetime.now().strftime("%H:%M:%S") + '] ' +
+          'Simulation started with', situparam.agentnumber, 'agent(s). ')
     # size of area
-    print(
-        'Sizes of the starting area: ' + str(situparam.initpos.x) + 'cm * ' + str(situparam.initpos.y) + 'cm * ' + str(
-            situparam.initpos.z) + 'cm')
+    print('[' + datetime.datetime.now().strftime("%H:%M:%S") + '] ' + 'Sizes of the starting area: ' + str(situparam.initpos.x) + 'cm*' + str(situparam.initpos.y) + 'cm*' + str(
+        situparam.initpos.z) + 'cm')
 
     # The real challenge starts!
     statutil.elapsedtime = (now * situparam.deltaT) - \
-                           5.0 - unitparam.communication.tdelay
+        5.0 - unitparam.communication.tdelay
 
     statutil.reset()
 
@@ -235,9 +239,10 @@ if __name__ == '__main__':
         windparam=windparam,
         statutil=statutil,
         result=[])
-    pg.gamestart(timestep2store=timestep2store)
+    pg.start(timestep2store=timestep2store)
 
     # Log printing
+    # Output file directory
     print('[' + datetime.datetime.now().strftime("%H:%M:%S") + '] ' +
           "The result will be written into '" + OutputPath + "'")
 

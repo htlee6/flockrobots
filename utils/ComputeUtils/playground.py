@@ -25,19 +25,19 @@ class Playground:
         self.result = result
         pass
 
-    def gamestart(self, timestep2store: int):
+    def start(self, timestep2store: int):
         # local variable definition
         now = 0
 
-        while self.statutil.elapsedtime < self.situationparam.simlength:
+        '''while self.statisticutil.elapsedtime < self.situationparam.simlength:
             if now < timestep2store:
 
                 pass
             else:
                 pass
-            if outputmode.savecollisions is SaveMode.STEADYSTAT and statutil.elapsedtime < situparam.startofsteadystate:
-                collisions = 0
+            # if outputmode.savecollisions is SaveMode.STEADYSTAT and statutil.elapsedtime < situparam.startofsteadystate:
+                # collisions = 0
             pass
-        pass
+        pass'''
 
 
