@@ -7,6 +7,10 @@ from utils.PhaseUtils.phase import Phase
 from utils.Basic.velocity import Velocity3D
 
 
+def step():
+    pass
+
+
 def initpreferredvelocity(p_phase: Phase, p_situparam: SituationParam):
     """Calculate a preferred velocity for the agents in the flock.
 

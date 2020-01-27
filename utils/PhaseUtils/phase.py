@@ -37,6 +37,9 @@ class Phase:
     def getagentcoordinates(self, agentno: int):
         return self.agents[agentno].coordinate
 
+    def getagentvelocity(self, agentno: int):
+        return self.agents[agentno].velocity
+
     def editagentcoordinate(self, agentidx: int, coord: Position3D):
         self.agents[agentidx].coordinate = coord
 
@@ -176,7 +179,7 @@ def initializephase(phase: Phase, flockparam: FlockParam,
         fromagentno=0,
         toagentno=phase.noagentsinphase(),
         radius=max(
-            situparam.dangerousradius,
+            situparam.dangerradius,
             flockparam.v_flock * 2))
     if flockparam.dimofsimulation == 2:
         for m in range(phase.noagentsinphase()):

@@ -64,7 +64,7 @@ def initcondition(phase: Phase, situparam: situation.SituationParam):
     phase.randomphase(initsize=situparam.initpos,
                       initcenter=Position3D(x=0.0, y=0.0, z=0.0),
                       fromagentno=0, toagentno=phase.noagentsinphase(),
-                      radius=situparam.dangerousradius)
+                      radius=situparam.dangerradius)
 
     return phase
     pass

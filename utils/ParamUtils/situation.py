@@ -28,18 +28,18 @@ class SituationParam:
     simlength: int
     initpos: Position3D
     deltaT: float
-    dangerousradius: float
+    dangerradius: float
     length2store: float
     startofsteadystate: False
 
     def __init__(self, agentnumber=0, simlength=0, initpos=Position3D(),
-                 deltaT=0.0, dangerousradius=0.0, length2store=0.0, startofsteadystate=False):
+                 deltaT=0.0, dangerradius=0.0, length2store=0.0, startofsteadystate=False):
 
         self.agentnumber = agentnumber
         self.simlength = simlength
         self.initpos = initpos
         self.deltaT = deltaT
-        self.dangerousradius = dangerousradius
+        self.dangerradius = dangerradius
         self.length2store = length2store
         self.startofsteadystate = startofsteadystate
 
@@ -57,7 +57,7 @@ class SituationParam:
 
         newsituparam = SituationParam(agentnumber=thejson['AgentNumber'], simlength=thejson['SimulationLength'],
                                       initpos=Position3D(x=jsonx, y=jsony, z=jsonz), deltaT=thejson['deltaT'],
-                                      dangerousradius=thejson['DangerousRadius'], length2store=thejson['LengthToStore'],
+                                      dangerradius=thejson['DangerousRadius'], length2store=thejson['LengthToStore'],
                                       startofsteadystate=thejson['StartOfSteadyState'])
 
         return newsituparam

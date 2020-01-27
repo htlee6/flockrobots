@@ -1,3 +1,6 @@
+import math
+
+
 class Velocity2D:
 
     vx: float
@@ -44,5 +47,17 @@ class Velocity3D(Velocity2D):
 
     def velocitydiff(self, vel: 'Velocity3D'):
         return Velocity3D(self.vx-vel.vx, self.vy-vel.vy, self.vz-vel.vz)
+
+    def unitize(self):
+        """
+        Unitization of a random vector, could be acceleration, velocity, position or etc.
+
+        Returns: A unitizated Velocity3D object
+
+        """
+        denominator = math.sqrt(pow(self.vx, 2) + pow(self.vy, 2) + pow(self.vz, 2))
+
+        return Velocity3D(self.vx/denominator, self.vy/denominator, self.vz/denominator)
+
 
 
